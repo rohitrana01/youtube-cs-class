@@ -1,0 +1,1411 @@
+{
+  "course": "Complete Computer Science Course",
+  "description": "From Basic to Advanced — Daily 5-Minute Animated Videos",
+  "topics": [
+    {
+      "id": "cs001",
+      "day": 1,
+      "title": "What is a Computer?",
+      "module": "Computer Basics",
+      "level": "Beginner",
+      "tags": [
+        "computer basics",
+        "introduction",
+        "hardware"
+      ],
+      "uploaded": true,
+      "channel": "LearnCS Daily",
+      "video_id": "YZ-A6TQRn1o",
+      "upload_date": "2026-06-14T17:52:01.969368+00:00"
+    },
+    {
+      "id": "cs002",
+      "day": 2,
+      "title": "History of Computers",
+      "module": "Computer Basics",
+      "level": "Beginner",
+      "tags": [
+        "history",
+        "ENIAC",
+        "generations"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs003",
+      "day": 3,
+      "title": "Input and Output Devices",
+      "module": "Computer Basics",
+      "level": "Beginner",
+      "tags": [
+        "keyboard",
+        "mouse",
+        "monitor",
+        "IO"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs004",
+      "day": 4,
+      "title": "The CPU Explained",
+      "module": "Computer Basics",
+      "level": "Beginner",
+      "tags": [
+        "CPU",
+        "processor",
+        "cores",
+        "clock speed"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs005",
+      "day": 5,
+      "title": "RAM vs Storage — Memory Types",
+      "module": "Computer Basics",
+      "level": "Beginner",
+      "tags": [
+        "RAM",
+        "SSD",
+        "HDD",
+        "memory"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs006",
+      "day": 6,
+      "title": "How Operating Systems Work",
+      "module": "Computer Basics",
+      "level": "Beginner",
+      "tags": [
+        "OS",
+        "Windows",
+        "Linux",
+        "macOS"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs007",
+      "day": 7,
+      "title": "File Systems and Storage",
+      "module": "Computer Basics",
+      "level": "Beginner",
+      "tags": [
+        "files",
+        "folders",
+        "NTFS",
+        "ext4"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs008",
+      "day": 8,
+      "title": "Computer Networks Basics",
+      "module": "Computer Basics",
+      "level": "Beginner",
+      "tags": [
+        "networking",
+        "LAN",
+        "WAN",
+        "router"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs009",
+      "day": 9,
+      "title": "How the Internet Works",
+      "module": "Computer Basics",
+      "level": "Beginner",
+      "tags": [
+        "internet",
+        "TCP/IP",
+        "packets",
+        "DNS"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs010",
+      "day": 10,
+      "title": "How Web Browsers Work",
+      "module": "Computer Basics",
+      "level": "Beginner",
+      "tags": [
+        "browser",
+        "HTTP",
+        "HTML rendering",
+        "DNS"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs011",
+      "day": 11,
+      "title": "What is Programming?",
+      "module": "Programming Fundamentals",
+      "level": "Beginner",
+      "tags": [
+        "programming",
+        "code",
+        "algorithms",
+        "languages"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs012",
+      "day": 12,
+      "title": "Python Setup and Your First Program",
+      "module": "Programming Fundamentals",
+      "level": "Beginner",
+      "tags": [
+        "python",
+        "hello world",
+        "setup",
+        "IDE"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs013",
+      "day": 13,
+      "title": "Variables and Data Types in Python",
+      "module": "Programming Fundamentals",
+      "level": "Beginner",
+      "tags": [
+        "variables",
+        "int",
+        "float",
+        "string",
+        "boolean"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs014",
+      "day": 14,
+      "title": "User Input and Print Output",
+      "module": "Programming Fundamentals",
+      "level": "Beginner",
+      "tags": [
+        "input",
+        "print",
+        "python basics"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs015",
+      "day": 15,
+      "title": "Operators and Expressions",
+      "module": "Programming Fundamentals",
+      "level": "Beginner",
+      "tags": [
+        "operators",
+        "arithmetic",
+        "comparison",
+        "logical"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs016",
+      "day": 16,
+      "title": "If, Elif, Else — Conditional Logic",
+      "module": "Programming Fundamentals",
+      "level": "Beginner",
+      "tags": [
+        "conditionals",
+        "if else",
+        "logic",
+        "branching"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs017",
+      "day": 17,
+      "title": "For Loops in Python",
+      "module": "Programming Fundamentals",
+      "level": "Beginner",
+      "tags": [
+        "for loop",
+        "iteration",
+        "range",
+        "python"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs018",
+      "day": 18,
+      "title": "While Loops in Python",
+      "module": "Programming Fundamentals",
+      "level": "Beginner",
+      "tags": [
+        "while loop",
+        "iteration",
+        "break",
+        "continue"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs019",
+      "day": 19,
+      "title": "Functions — Write Once, Reuse Anywhere",
+      "module": "Programming Fundamentals",
+      "level": "Beginner",
+      "tags": [
+        "functions",
+        "def",
+        "parameters",
+        "return"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs020",
+      "day": 20,
+      "title": "Scope and Namespaces",
+      "module": "Programming Fundamentals",
+      "level": "Beginner",
+      "tags": [
+        "scope",
+        "local",
+        "global",
+        "namespace"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs021",
+      "day": 21,
+      "title": "Lists in Python",
+      "module": "Programming Fundamentals",
+      "level": "Beginner",
+      "tags": [
+        "lists",
+        "append",
+        "indexing",
+        "slicing"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs022",
+      "day": 22,
+      "title": "Tuples and Sets",
+      "module": "Programming Fundamentals",
+      "level": "Beginner",
+      "tags": [
+        "tuples",
+        "sets",
+        "immutable",
+        "unique"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs023",
+      "day": 23,
+      "title": "Dictionaries in Python",
+      "module": "Programming Fundamentals",
+      "level": "Beginner",
+      "tags": [
+        "dictionaries",
+        "key value",
+        "dict",
+        "hash map"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs024",
+      "day": 24,
+      "title": "String Methods and Formatting",
+      "module": "Programming Fundamentals",
+      "level": "Beginner",
+      "tags": [
+        "strings",
+        "format",
+        "f-string",
+        "methods"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs025",
+      "day": 25,
+      "title": "File Handling in Python",
+      "module": "Programming Fundamentals",
+      "level": "Beginner",
+      "tags": [
+        "files",
+        "read",
+        "write",
+        "open"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs026",
+      "day": 26,
+      "title": "Arrays and Lists — Data Structures Intro",
+      "module": "Data Structures",
+      "level": "Intermediate",
+      "tags": [
+        "arrays",
+        "data structures",
+        "indexing",
+        "complexity"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs027",
+      "day": 27,
+      "title": "Linked Lists Explained",
+      "module": "Data Structures",
+      "level": "Intermediate",
+      "tags": [
+        "linked list",
+        "nodes",
+        "pointers",
+        "singly linked"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs028",
+      "day": 28,
+      "title": "Doubly Linked Lists",
+      "module": "Data Structures",
+      "level": "Intermediate",
+      "tags": [
+        "doubly linked list",
+        "prev next",
+        "traversal"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs029",
+      "day": 29,
+      "title": "Stacks — LIFO Data Structure",
+      "module": "Data Structures",
+      "level": "Intermediate",
+      "tags": [
+        "stack",
+        "LIFO",
+        "push pop",
+        "call stack"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs030",
+      "day": 30,
+      "title": "Queues — FIFO Data Structure",
+      "module": "Data Structures",
+      "level": "Intermediate",
+      "tags": [
+        "queue",
+        "FIFO",
+        "enqueue dequeue",
+        "BFS"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs031",
+      "day": 31,
+      "title": "Hash Tables and Hashing",
+      "module": "Data Structures",
+      "level": "Intermediate",
+      "tags": [
+        "hash table",
+        "hash function",
+        "collision",
+        "O(1)"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs032",
+      "day": 32,
+      "title": "Binary Trees Explained",
+      "module": "Data Structures",
+      "level": "Intermediate",
+      "tags": [
+        "binary tree",
+        "root",
+        "leaf",
+        "traversal"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs033",
+      "day": 33,
+      "title": "Binary Search Trees",
+      "module": "Data Structures",
+      "level": "Intermediate",
+      "tags": [
+        "BST",
+        "insert",
+        "search",
+        "delete"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs034",
+      "day": 34,
+      "title": "AVL Trees — Self-Balancing BST",
+      "module": "Data Structures",
+      "level": "Intermediate",
+      "tags": [
+        "AVL tree",
+        "balanced",
+        "rotations",
+        "height"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs035",
+      "day": 35,
+      "title": "Heaps and Priority Queues",
+      "module": "Data Structures",
+      "level": "Intermediate",
+      "tags": [
+        "heap",
+        "min heap",
+        "max heap",
+        "heapify"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs036",
+      "day": 36,
+      "title": "Graphs — Introduction",
+      "module": "Data Structures",
+      "level": "Intermediate",
+      "tags": [
+        "graphs",
+        "vertices",
+        "edges",
+        "directed undirected"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs037",
+      "day": 37,
+      "title": "Graph Representations",
+      "module": "Data Structures",
+      "level": "Intermediate",
+      "tags": [
+        "adjacency matrix",
+        "adjacency list",
+        "graph storage"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs038",
+      "day": 38,
+      "title": "Tries — Prefix Trees",
+      "module": "Data Structures",
+      "level": "Intermediate",
+      "tags": [
+        "trie",
+        "prefix tree",
+        "autocomplete",
+        "strings"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs039",
+      "day": 39,
+      "title": "Deque and Circular Buffers",
+      "module": "Data Structures",
+      "level": "Intermediate",
+      "tags": [
+        "deque",
+        "circular buffer",
+        "double ended queue"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs040",
+      "day": 40,
+      "title": "When to Use Which Data Structure",
+      "module": "Data Structures",
+      "level": "Intermediate",
+      "tags": [
+        "data structure comparison",
+        "Big O",
+        "choosing"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs041",
+      "day": 41,
+      "title": "What is an Algorithm?",
+      "module": "Algorithms",
+      "level": "Intermediate",
+      "tags": [
+        "algorithm",
+        "problem solving",
+        "steps",
+        "pseudocode"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs042",
+      "day": 42,
+      "title": "Big O Notation Explained",
+      "module": "Algorithms",
+      "level": "Intermediate",
+      "tags": [
+        "Big O",
+        "time complexity",
+        "space complexity",
+        "O(n)"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs043",
+      "day": 43,
+      "title": "Linear Search Algorithm",
+      "module": "Algorithms",
+      "level": "Intermediate",
+      "tags": [
+        "linear search",
+        "O(n)",
+        "sequential",
+        "brute force"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs044",
+      "day": 44,
+      "title": "Binary Search Algorithm",
+      "module": "Algorithms",
+      "level": "Intermediate",
+      "tags": [
+        "binary search",
+        "O(log n)",
+        "sorted",
+        "divide conquer"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs045",
+      "day": 45,
+      "title": "Bubble Sort — Simplest Sorting",
+      "module": "Algorithms",
+      "level": "Intermediate",
+      "tags": [
+        "bubble sort",
+        "sorting",
+        "O(n2)",
+        "swapping"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs046",
+      "day": 46,
+      "title": "Selection Sort",
+      "module": "Algorithms",
+      "level": "Intermediate",
+      "tags": [
+        "selection sort",
+        "minimum",
+        "O(n2)",
+        "in-place"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs047",
+      "day": 47,
+      "title": "Insertion Sort",
+      "module": "Algorithms",
+      "level": "Intermediate",
+      "tags": [
+        "insertion sort",
+        "O(n2)",
+        "online",
+        "cards"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs048",
+      "day": 48,
+      "title": "Merge Sort — Divide and Conquer",
+      "module": "Algorithms",
+      "level": "Intermediate",
+      "tags": [
+        "merge sort",
+        "O(n log n)",
+        "divide conquer",
+        "recursion"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs049",
+      "day": 49,
+      "title": "Quick Sort Algorithm",
+      "module": "Algorithms",
+      "level": "Intermediate",
+      "tags": [
+        "quick sort",
+        "pivot",
+        "partition",
+        "O(n log n)"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs050",
+      "day": 50,
+      "title": "Heap Sort",
+      "module": "Algorithms",
+      "level": "Intermediate",
+      "tags": [
+        "heap sort",
+        "heapify",
+        "O(n log n)",
+        "in-place"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs051",
+      "day": 51,
+      "title": "Recursion Explained",
+      "module": "Algorithms",
+      "level": "Intermediate",
+      "tags": [
+        "recursion",
+        "base case",
+        "stack overflow",
+        "fibonacci"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs052",
+      "day": 52,
+      "title": "Dynamic Programming Introduction",
+      "module": "Algorithms",
+      "level": "Intermediate",
+      "tags": [
+        "dynamic programming",
+        "memoization",
+        "tabulation",
+        "DP"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs053",
+      "day": 53,
+      "title": "Greedy Algorithms",
+      "module": "Algorithms",
+      "level": "Intermediate",
+      "tags": [
+        "greedy",
+        "optimal",
+        "coin change",
+        "interval scheduling"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs054",
+      "day": 54,
+      "title": "BFS — Breadth-First Search",
+      "module": "Algorithms",
+      "level": "Intermediate",
+      "tags": [
+        "BFS",
+        "graph traversal",
+        "queue",
+        "shortest path"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs055",
+      "day": 55,
+      "title": "DFS — Depth-First Search",
+      "module": "Algorithms",
+      "level": "Intermediate",
+      "tags": [
+        "DFS",
+        "graph traversal",
+        "stack",
+        "backtracking"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs056",
+      "day": 56,
+      "title": "Classes and Objects in Python",
+      "module": "Object-Oriented Programming",
+      "level": "Intermediate",
+      "tags": [
+        "OOP",
+        "classes",
+        "objects",
+        "instances"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs057",
+      "day": 57,
+      "title": "Constructors and Instance Methods",
+      "module": "Object-Oriented Programming",
+      "level": "Intermediate",
+      "tags": [
+        "__init__",
+        "self",
+        "methods",
+        "attributes"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs058",
+      "day": 58,
+      "title": "Inheritance in OOP",
+      "module": "Object-Oriented Programming",
+      "level": "Intermediate",
+      "tags": [
+        "inheritance",
+        "parent child",
+        "super",
+        "extends"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs059",
+      "day": 59,
+      "title": "Polymorphism and Method Overriding",
+      "module": "Object-Oriented Programming",
+      "level": "Intermediate",
+      "tags": [
+        "polymorphism",
+        "override",
+        "duck typing",
+        "interfaces"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs060",
+      "day": 60,
+      "title": "Encapsulation and Abstraction",
+      "module": "Object-Oriented Programming",
+      "level": "Intermediate",
+      "tags": [
+        "encapsulation",
+        "private",
+        "abstraction",
+        "getter setter"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs061",
+      "day": 61,
+      "title": "Magic Methods and Dunder Methods",
+      "module": "Object-Oriented Programming",
+      "level": "Intermediate",
+      "tags": [
+        "dunder",
+        "__str__",
+        "__len__",
+        "operator overload"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs062",
+      "day": 62,
+      "title": "Design Pattern: Singleton",
+      "module": "Object-Oriented Programming",
+      "level": "Advanced",
+      "tags": [
+        "singleton",
+        "design pattern",
+        "instance",
+        "GOF"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs063",
+      "day": 63,
+      "title": "Design Pattern: Factory",
+      "module": "Object-Oriented Programming",
+      "level": "Advanced",
+      "tags": [
+        "factory pattern",
+        "creational",
+        "abstraction",
+        "OOP"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs064",
+      "day": 64,
+      "title": "Design Pattern: Observer",
+      "module": "Object-Oriented Programming",
+      "level": "Advanced",
+      "tags": [
+        "observer",
+        "event driven",
+        "pub sub",
+        "callbacks"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs065",
+      "day": 65,
+      "title": "SOLID Principles in Practice",
+      "module": "Object-Oriented Programming",
+      "level": "Advanced",
+      "tags": [
+        "SOLID",
+        "clean code",
+        "SRP",
+        "DIP",
+        "OCP"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs066",
+      "day": 66,
+      "title": "HTML Basics — Structure of the Web",
+      "module": "Web Development",
+      "level": "Beginner",
+      "tags": [
+        "HTML",
+        "tags",
+        "elements",
+        "web basics"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs067",
+      "day": 67,
+      "title": "HTML Forms and Tables",
+      "module": "Web Development",
+      "level": "Beginner",
+      "tags": [
+        "HTML forms",
+        "input",
+        "table",
+        "semantic HTML"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs068",
+      "day": 68,
+      "title": "CSS Basics — Styling Web Pages",
+      "module": "Web Development",
+      "level": "Beginner",
+      "tags": [
+        "CSS",
+        "selectors",
+        "properties",
+        "styling"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs069",
+      "day": 69,
+      "title": "CSS Flexbox Layout",
+      "module": "Web Development",
+      "level": "Intermediate",
+      "tags": [
+        "flexbox",
+        "flex",
+        "layout",
+        "responsive"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs070",
+      "day": 70,
+      "title": "CSS Grid Layout",
+      "module": "Web Development",
+      "level": "Intermediate",
+      "tags": [
+        "CSS grid",
+        "grid-template",
+        "columns",
+        "rows"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs071",
+      "day": 71,
+      "title": "JavaScript Basics",
+      "module": "Web Development",
+      "level": "Beginner",
+      "tags": [
+        "JavaScript",
+        "JS",
+        "variables",
+        "DOM"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs072",
+      "day": 72,
+      "title": "DOM Manipulation with JavaScript",
+      "module": "Web Development",
+      "level": "Intermediate",
+      "tags": [
+        "DOM",
+        "querySelector",
+        "innerHTML",
+        "events"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs073",
+      "day": 73,
+      "title": "JavaScript Events and Listeners",
+      "module": "Web Development",
+      "level": "Intermediate",
+      "tags": [
+        "events",
+        "addEventListener",
+        "click",
+        "forms"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs074",
+      "day": 74,
+      "title": "Fetch API and Promises",
+      "module": "Web Development",
+      "level": "Intermediate",
+      "tags": [
+        "fetch",
+        "async",
+        "promises",
+        "API calls"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs075",
+      "day": 75,
+      "title": "Async and Await in JavaScript",
+      "module": "Web Development",
+      "level": "Intermediate",
+      "tags": [
+        "async await",
+        "asynchronous",
+        "error handling",
+        "JS"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs076",
+      "day": 76,
+      "title": "Introduction to React",
+      "module": "Web Development",
+      "level": "Intermediate",
+      "tags": [
+        "React",
+        "component",
+        "JSX",
+        "frontend"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs077",
+      "day": 77,
+      "title": "React State and Props",
+      "module": "Web Development",
+      "level": "Intermediate",
+      "tags": [
+        "useState",
+        "props",
+        "state management",
+        "React"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs078",
+      "day": 78,
+      "title": "Node.js Introduction",
+      "module": "Web Development",
+      "level": "Intermediate",
+      "tags": [
+        "Node.js",
+        "server side",
+        "npm",
+        "runtime"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs079",
+      "day": 79,
+      "title": "REST APIs with Express.js",
+      "module": "Web Development",
+      "level": "Intermediate",
+      "tags": [
+        "REST API",
+        "Express",
+        "routes",
+        "HTTP methods"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs080",
+      "day": 80,
+      "title": "REST API Design Best Practices",
+      "module": "Web Development",
+      "level": "Intermediate",
+      "tags": [
+        "API design",
+        "status codes",
+        "versioning",
+        "JSON"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs081",
+      "day": 81,
+      "title": "Introduction to Databases",
+      "module": "Databases",
+      "level": "Beginner",
+      "tags": [
+        "databases",
+        "SQL",
+        "NoSQL",
+        "RDBMS"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs082",
+      "day": 82,
+      "title": "SQL Basics — SELECT Queries",
+      "module": "Databases",
+      "level": "Beginner",
+      "tags": [
+        "SQL",
+        "SELECT",
+        "WHERE",
+        "FROM",
+        "queries"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs083",
+      "day": 83,
+      "title": "SQL Joins Explained",
+      "module": "Databases",
+      "level": "Intermediate",
+      "tags": [
+        "SQL joins",
+        "INNER JOIN",
+        "LEFT JOIN",
+        "tables"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs084",
+      "day": 84,
+      "title": "SQL Aggregations and GROUP BY",
+      "module": "Databases",
+      "level": "Intermediate",
+      "tags": [
+        "COUNT",
+        "SUM",
+        "AVG",
+        "GROUP BY",
+        "HAVING"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs085",
+      "day": 85,
+      "title": "Database Design and Normalization",
+      "module": "Databases",
+      "level": "Intermediate",
+      "tags": [
+        "normalization",
+        "1NF",
+        "2NF",
+        "3NF",
+        "schema design"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs086",
+      "day": 86,
+      "title": "Database Indexing",
+      "module": "Databases",
+      "level": "Intermediate",
+      "tags": [
+        "indexes",
+        "B-tree",
+        "query performance",
+        "slow queries"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs087",
+      "day": 87,
+      "title": "Transactions and ACID Properties",
+      "module": "Databases",
+      "level": "Intermediate",
+      "tags": [
+        "transactions",
+        "ACID",
+        "commit",
+        "rollback",
+        "isolation"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs088",
+      "day": 88,
+      "title": "NoSQL Databases Introduction",
+      "module": "Databases",
+      "level": "Intermediate",
+      "tags": [
+        "NoSQL",
+        "document store",
+        "key-value",
+        "CAP theorem"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs089",
+      "day": 89,
+      "title": "MongoDB Basics",
+      "module": "Databases",
+      "level": "Intermediate",
+      "tags": [
+        "MongoDB",
+        "documents",
+        "collections",
+        "BSON"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs090",
+      "day": 90,
+      "title": "Database Performance Optimization",
+      "module": "Databases",
+      "level": "Advanced",
+      "tags": [
+        "optimization",
+        "query plan",
+        "caching",
+        "sharding"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs091",
+      "day": 91,
+      "title": "Git Version Control Basics",
+      "module": "Advanced Topics",
+      "level": "Beginner",
+      "tags": [
+        "git",
+        "version control",
+        "commit",
+        "branch"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs092",
+      "day": 92,
+      "title": "Git Branching and Merging",
+      "module": "Advanced Topics",
+      "level": "Intermediate",
+      "tags": [
+        "git branch",
+        "merge",
+        "rebase",
+        "pull request"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs093",
+      "day": 93,
+      "title": "Command Line and Bash Basics",
+      "module": "Advanced Topics",
+      "level": "Beginner",
+      "tags": [
+        "terminal",
+        "bash",
+        "CLI",
+        "linux commands"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs094",
+      "day": 94,
+      "title": "Docker Introduction",
+      "module": "Advanced Topics",
+      "level": "Intermediate",
+      "tags": [
+        "docker",
+        "containers",
+        "images",
+        "Dockerfile"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs095",
+      "day": 95,
+      "title": "Cloud Computing Fundamentals",
+      "module": "Advanced Topics",
+      "level": "Intermediate",
+      "tags": [
+        "cloud",
+        "AWS",
+        "GCP",
+        "Azure",
+        "IaaS PaaS SaaS"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs096",
+      "day": 96,
+      "title": "System Design Basics",
+      "module": "Advanced Topics",
+      "level": "Advanced",
+      "tags": [
+        "system design",
+        "scalability",
+        "load balancer",
+        "microservices"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs097",
+      "day": 97,
+      "title": "Computer Security Fundamentals",
+      "module": "Advanced Topics",
+      "level": "Intermediate",
+      "tags": [
+        "security",
+        "hashing",
+        "encryption",
+        "vulnerabilities"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs098",
+      "day": 98,
+      "title": "Cryptography Explained",
+      "module": "Advanced Topics",
+      "level": "Advanced",
+      "tags": [
+        "cryptography",
+        "RSA",
+        "AES",
+        "public key",
+        "HTTPS"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs099",
+      "day": 99,
+      "title": "Introduction to Machine Learning",
+      "module": "Advanced Topics",
+      "level": "Advanced",
+      "tags": [
+        "machine learning",
+        "ML",
+        "training",
+        "model",
+        "supervised"
+      ],
+      "uploaded": false
+    },
+    {
+      "id": "cs100",
+      "day": 100,
+      "title": "Artificial Intelligence and the Future",
+      "module": "Advanced Topics",
+      "level": "Advanced",
+      "tags": [
+        "AI",
+        "LLMs",
+        "neural networks",
+        "future of tech"
+      ],
+      "uploaded": false
+    }
+  ]
+}

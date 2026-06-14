@@ -1,0 +1,96 @@
+name: Daily YouTube Upload
+
+on:
+  # Run every day at 9:00 AM IST (3:30 AM UTC)
+  schedule:
+    - cron: '30 3 * * *'
+
+  # Allow manual trigger from GitHub Actions tab
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (skip actual upload)'
+        required: false
+        default: 'false'
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45       # Safety limit — full pipeline takes ~25 min
+
+    permissions:
+      contents: write          # Needed to commit updated curriculum.json
+
+    steps:
+      # ── Checkout ────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── System dependencies ──────────────────────────────────────────────
+      - name: Install system packages
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq \
+            ffmpeg \
+            fonts-dejavu-core \
+            fonts-liberation \
+            libcairo2 \
+            libpango-1.0-0
+
+      # ── Python ──────────────────────────────────────────────────────────
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      # ── Validate secrets ─────────────────────────────────────────────────
+      - name: Check required secrets
+        run: |
+          [ -z "$ANTHROPIC_API_KEY" ]      && echo "❌ ANTHROPIC_API_KEY missing"      && exit 1 || true
+          [ -z "$YOUTUBE_CLIENT_ID" ]      && echo "❌ YOUTUBE_CLIENT_ID missing"      && exit 1 || true
+          [ -z "$YOUTUBE_CLIENT_SECRET" ]  && echo "❌ YOUTUBE_CLIENT_SECRET missing"  && exit 1 || true
+          [ -z "$YOUTUBE_REFRESH_TOKEN" ]  && echo "❌ YOUTUBE_REFRESH_TOKEN missing"  && exit 1 || true
+          echo "✅ All secrets present"
+        env:
+          ANTHROPIC_API_KEY:      ${{ secrets.ANTHROPIC_API_KEY }}
+          YOUTUBE_CLIENT_ID:      ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET:  ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN:  ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+
+      # ── Run pipeline ─────────────────────────────────────────────────────
+      - name: Run automation pipeline
+        env:
+          ANTHROPIC_API_KEY:      ${{ secrets.ANTHROPIC_API_KEY }}
+          YOUTUBE_CLIENT_ID:      ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET:  ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN:  ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          CHANNEL_NAME:           ${{ secrets.CHANNEL_NAME }}
+          TTS_VOICE:              ${{ secrets.TTS_VOICE }}
+          VIDEO_PRIVACY:          ${{ vars.VIDEO_PRIVACY || 'public' }}
+          DRY_RUN:                ${{ github.event.inputs.dry_run || 'false' }}
+        run: python pipeline.py
+
+      # ── Commit progress ───────────────────────────────────────────────────
+      - name: Commit updated curriculum.json
+        run: |
+          git config --global user.name  "YouTube Bot"
+          git config --global user.email "bot@learncs.daily"
+          git add curriculum.json
+          git diff --staged --quiet && echo "Nothing to commit" || \
+            git commit -m "✅ Day $(python3 -c \"import json; d=json.load(open('curriculum.json')); print(max((t['day'] for t in d['topics'] if t.get('uploaded')), default=0))\") uploaded [skip ci]"
+          git push
+
+      # ── Upload artifacts on failure ───────────────────────────────────────
+      - name: Upload debug artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-debug
+          path: output/
+          retention-days: 3
