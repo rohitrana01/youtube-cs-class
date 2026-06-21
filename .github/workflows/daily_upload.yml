@@ -87,9 +87,13 @@ jobs:
           git config --global user.name  "YouTube Bot"
           git config --global user.email "bot@learncs.daily"
           git add curriculum.json
-          git diff --staged --quiet && echo "Nothing to commit" || \
-            git commit -m "✅ Day $(python3 -c \"import json; d=json.load(open('curriculum.json')); print(max((t['day'] for t in d['topics'] if t.get('uploaded')), default=0))\") uploaded [skip ci]"
-          git push
+          if ! git diff --staged --quiet; then
+            DAY_NUM=$(python3 -c 'import json; d=json.load(open("curriculum.json")); print(max([t["day"] for t in d["topics"] if t.get("uploaded")] or [0]))')
+            git commit -m "✅ Day ${DAY_NUM} uploaded [skip ci]"
+            git push
+          else
+            echo "Nothing to commit"
+          fi
 
       # ── Upload artifacts on failure ───────────────────────────────────────
       - name: Upload debug artifacts on failure
