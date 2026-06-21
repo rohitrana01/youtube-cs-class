@@ -19,7 +19,7 @@ from datetime import datetime, timezone
 from config import OUTPUT_DIR, CURRICULUM_FILE, LANGUAGE
 from modules.script_generator   import generate_script
 from modules.tts_narrator       import generate_narration
-from modules.animator           import create_animation
+from modules.animator           import create_animation, create_short_animation
 from modules.video_assembler    import assemble_video
 from modules.thumbnail_generator import create_thumbnail
 from modules.youtube_uploader   import upload_video
@@ -91,21 +91,38 @@ def run():
         json.dump(script_data, f, indent=2)
 
     # ── 2. Generate TTS narration ────────────────────────────────────────────
-    print("\n[2/6] 🎙️   Generating TTS narration…")
+    print("\n[2/6] 🎙️   Generating TTS narrations…")
+    # Main Video
     audio_path, audio_duration = generate_narration(
         script_data["narration"], out
     )
-    print(f"       Duration: {audio_duration:.1f}s")
+    print(f"       Main Video Duration: {audio_duration:.1f}s")
+    
+    # YouTube Short
+    short_audio_path, short_audio_dur = generate_narration(
+        script_data["short"]["narration"], out, filename="narration_short.mp3"
+    )
+    print(f"       Short Duration: {short_audio_dur:.1f}s")
 
     # ── 3. Render animation ──────────────────────────────────────────────────
     print("\n[3/6] 🎨  Rendering animation slides…")
+    topic["channel"] = "LearnCS Daily"   # inject channel for branding
+    
+    # Main Video
     anim_path = os.path.join(out, "animation.mp4")
-    topic["channel"] = "LearnCS Daily"   # inject channel name for slide branding
     create_animation(script_data, topic, audio_duration, anim_path)
+    
+    # YouTube Short (1080x1920 vertical)
+    short_anim_path = os.path.join(out, "animation_short.mp4")
+    create_short_animation(script_data, topic, short_audio_dur, short_anim_path)
 
-    # ── 4. Assemble final video ──────────────────────────────────────────────
-    print("\n[4/6] 🎬  Assembling final video…")
+    # ── 4. Assemble final videos ──────────────────────────────────────────────
+    print("\n[4/6] 🎬  Assembling final videos…")
     final_path = assemble_video(anim_path, audio_path, out)
+    short_final_path = assemble_video(
+        short_anim_path, short_audio_path, out, 
+        filename=f"final_short_{LANGUAGE}.mp4", is_short=True
+    )
 
     # ── 5. Generate thumbnail ────────────────────────────────────────────────
     print("\n[5/6] 🖼️   Generating thumbnail…")
@@ -117,6 +134,7 @@ def run():
         print("       [DRY RUN] Skipping YouTube upload. Using mock video ID.")
         video_id = "mock_video_id"
     else:
+        # Upload Main Video
         video_id = upload_video(
             video_path=final_path,
             thumbnail_path=thumb_path,
@@ -124,6 +142,19 @@ def run():
             description=script_data["video_description"],
             tags=script_data.get("tags", []) + topic.get("tags", []),
         )
+        # Upload Short
+        print("       Uploading Short to YouTube…")
+        try:
+            upload_video(
+                video_path=short_final_path,
+                thumbnail_path=None,
+                title=script_data["short"]["title"],
+                description=script_data["short"]["description"],
+                tags=script_data["short"].get("tags", []),
+            )
+            print("       Short uploaded successfully!")
+        except Exception as e:
+            print(f"       Short upload failed: {e}")
 
     # ── 7. Mark as uploaded & save ───────────────────────────────────────────
     if dry_run:
@@ -144,12 +175,14 @@ def run():
     keep_files = ["script.json", "thumbnail.jpg"]
     if dry_run:
         keep_files.append(f"final_video_{LANGUAGE}.mp4")
+        keep_files.append(f"final_short_{LANGUAGE}.mp4")
     _cleanup(out, keep=keep_files)
 
 
 def _cleanup(out_dir: str, keep: list[str]):
     """Remove large video intermediates to save disk space."""
-    for fname in ["animation.mp4", "narration.mp3", f"final_video_{LANGUAGE}.mp4"]:
+    for fname in ["animation.mp4", "narration.mp3", f"final_video_{LANGUAGE}.mp4",
+                  "animation_short.mp4", "narration_short.mp3", f"final_short_{LANGUAGE}.mp4"]:
         if fname not in keep:
             p = os.path.join(out_dir, fname)
             if os.path.exists(p):

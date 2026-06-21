@@ -18,7 +18,7 @@ async def _generate_async(text: str, output_path: str, voice: str):
 
 
 def generate_narration(narration_text: str, output_dir: str,
-                       voice: str = None) -> tuple[str, float]:
+                       voice: str = None, filename: str = "narration.mp3") -> tuple[str, float]:
     """
     Generate TTS audio from narration_text.
 
@@ -34,7 +34,7 @@ def generate_narration(narration_text: str, output_dir: str,
     """
     voice = voice or TTS_VOICE
     os.makedirs(output_dir, exist_ok=True)
-    audio_path = os.path.join(output_dir, "narration.mp3")
+    audio_path = os.path.join(output_dir, filename)
 
     print(f"  [tts] Generating audio with voice: {voice}")
 

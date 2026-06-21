@@ -32,7 +32,14 @@ def generate_script(topic: dict) -> dict:
         "explanation": str
       },
       "summary_points": [str],   # 3-5 key takeaways
-      "next_topic": str          # Title of the next video
+      "next_topic": str,         # Title of the next video
+      "short": {                 # Daily vertical Shorts data
+        "title": str,            # Viral title with #shorts
+        "description": str,      # Viral description with hashtags
+        "tags": [str],
+        "narration": str,        # Fast-paced ~45-word narration under 25s
+        "image_prompt": str      # Engaging visual (specifying cartoon or real style)
+      }
     }
     """
     if not GEMINI_API_KEY:
@@ -43,22 +50,23 @@ def generate_script(topic: dict) -> dict:
     if LANGUAGE == "hi":
         lang_instruction = """
 IMPORTANT LANGUAGE RULES FOR HINDI (hi):
-1. video_title & video_description: Write in clean, highly appealing Hindi (using Devanagari script). Keep technical terms (like CPU, RAM, Python) as they are, but in Devanagari.
-2. narration: Must be in natural, conversational spoken Hindi (Devanagari script, e.g., "नमस्ते दोस्तों! आज हम बात करेंगे..."). It should sound like a friendly teacher explaining something to a beginner. Use everyday analogies. Write technical names in Devanagari (कंप्यूटर, रैम, सीपीयू).
-3. segments[].points (Slide Text): Write in bilingual Hinglish or English with Hindi meaning in brackets (e.g., "CPU: Central Processing Unit (कंप्यूटर का दिमाग)"). This makes it extremely easy for a Hindi speaker to read and follow. Keep it under 80 characters.
-4. quiz & summary_points: Write them in natural Hindi (Devanagari script). Technical terms stay in Devanagari.
+1. video_title & video_description: Write in clean, highly appealing Hindi (using Devanagari script). Keep technical terms as they are, but in Devanagari.
+2. narration: Must be in natural, conversational spoken Hindi (Devanagari script, e.g., "नमस्ते दोस्तों! आज हम बात करेंगे..."). Explain concepts simply. Write technical names in Devanagari (कंप्यूटर, रैम, सीपीयू).
+3. segments[].points (Slide Text): Write in bilingual Hinglish or English with Hindi meaning in brackets (e.g., "CPU: Central Processing Unit (कंप्यूटर का दिमाग)"). Keep it under 80 characters.
+4. quiz & summary_points: Write them in natural Hindi (Devanagari script).
+5. short: Write the "narration" and "title" in highly viral spoken Hindi (written in Devanagari) to hook normal people instantly. Keep technical terms in Devanagari.
 """
     else:
         lang_instruction = """
 IMPORTANT LANGUAGE RULES FOR ENGLISH (en):
-1. All fields (video_title, video_description, narration, segments[].points, quiz, summary_points, next_topic) must be in standard, clear, highly engaging English.
+1. All fields (including the "short" fields) must be in standard, clear, highly engaging English.
 """
 
-    prompt = f"""You are creating a 5-minute educational YouTube video script about: "{topic['title']}"
+    prompt = f"""You are creating a 5-minute educational YouTube video script AND a 20-second vertical YouTube Short about: "{topic['title']}"
 
 Module: {topic['module']}
 Level: {topic['level']}
-Day: {topic['day']} of a 100-day Computer Science course
+Day: {topic['day']} of a 100-day Computer Course
 
 {lang_instruction}
 
@@ -69,7 +77,7 @@ The JSON must match this exact structure:
   "video_title": "[Day {topic['day']}: Topic Title | Course Name]",
   "video_description": "[Video description covering the topic, with hashtags, target audience, etc.]",
   "tags": ["computer science", "programming", "tutorial", "education", "{topic['module'].lower()}"],
-  "narration": "[Write a ~700-word highly engaging narration script. Conversational tone. Start with a strong hook/question to grab normal people's attention immediately. Use real-world analogies. Explain everything step-by-step. Introduce the pop quiz before the summary points. Tease the next video at the very end.]",
+  "narration": "[Write a ~700-word highly engaging narration script. Conversational tone. Start with a strong hook/question. Explain everything step-by-step. Introduce the pop quiz before the summary points. Tease the next video at the very end.]",
   "segments": [
     {{
       "title": "[Section heading]",
@@ -106,7 +114,14 @@ The JSON must match this exact structure:
     "[Key takeaway 2]",
     "[Key takeaway 3]"
   ],
-  "next_topic": "[Title of day {topic['day'] + 1} topic]"
+  "next_topic": "[Title of day {topic['day'] + 1} topic]",
+  "short": {{
+    "title": "[Viral title under 70 characters with #shorts, e.g., 'This Computer Fact Will Blow Your Mind! 🤯 #shorts']",
+    "description": "[A punchy 1-sentence description with viral hashtags, e.g., '#shorts #techfacts #computer']",
+    "tags": ["shorts", "techfacts", "viral", "computer"],
+    "narration": "[An extremely fast-paced, high-curiosity 40-50 word narration script that fits within 25 seconds. Start instantly with a mind-blowing hook. E.g., 'Wait, did you know that your computer RAM is actually just like a messy student desk?']",
+    "image_prompt": "[A highly visual description of an image for a vertical 1080x1920 layout. Force a distinct style, either 'A vibrant 3D digital cartoon illustration of...' or 'An ultra-realistic close-up photograph of...', whichever style creates the best visual hook for the fact. Do NOT request text.]"
+  }}
 }}
 
 Rules:
@@ -114,6 +129,7 @@ Rules:
 - Keep each slide bullet point simple, punchy, and under 80 characters.
 - Always set the `"code"` field to `null` since this is a non-coding computer course.
 - Ensure the `image_prompt` is a detailed visual description or metaphor representing the concept of that segment, without text in the image.
+- Enforce the YouTube Short to be 20-30 seconds with an immediate curiosity hook and either cartoon or realistic style.
 - Return ONLY the raw JSON object."""
 
     try:
@@ -191,6 +207,13 @@ def _fallback_script(topic: dict) -> dict:
             "कंप्यूटर को आसान उदाहरणों से समझा।",
             "सीखते रहिए और प्रैक्टिस करते रहिए!"
         ]
+        short = {
+            "title": f"क्या आपको पता है कंप्यूटर कैसे काम करता है? 🤯 #shorts",
+            "description": "सीखें कंप्यूटर की ये अद्भुत जानकारी। #shorts #techfacts #computerknowledge",
+            "tags": ["shorts", "techfacts", "computer"],
+            "narration": f"क्या आप जानते हैं कि कंप्यूटर का दिमाग यानी सीपीयू एक सेकंड में लाखों कैलकुलेशन कर सकता है? यह आपकी पलक झपकने से भी तेज है!",
+            "image_prompt": "A vibrant 3D digital cartoon illustration of a cute glowing computer CPU chip running super fast with happy electric sparks."
+        }
     else:
         title = f"Day {topic['day']}: {topic['title']} | CS Course"
         desc = f"Today we learn about {topic['title']}. Part of our 100-day CS course."
@@ -230,6 +253,13 @@ def _fallback_script(topic: dict) -> dict:
             "Understanding theory helps practical coding",
             "Practice makes perfect — try it yourself!"
         ]
+        short = {
+            "title": f"The CPU processes faster than you think! 🤯 #shorts",
+            "description": "Interesting computer fact about CPU processing speed. #shorts #techfacts",
+            "tags": ["shorts", "techfacts", "computer"],
+            "narration": "Did you know that your computer's CPU can process billions of calculations in a single second? That's faster than the speed of human thought!",
+            "image_prompt": "An ultra-realistic close-up photograph of a modern motherboard with golden circuits glowing as data travels through it."
+        }
 
     return {
         "video_title": title,
@@ -254,6 +284,7 @@ def _fallback_script(topic: dict) -> dict:
         ],
         "quiz": quiz,
         "summary_points": summary_points,
-        "next_topic": "Next topic in the series"
+        "next_topic": "Next topic in the series",
+        "short": short
     }
 

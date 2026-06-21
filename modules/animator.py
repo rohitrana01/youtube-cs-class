@@ -9,6 +9,7 @@ import io
 import math
 import requests
 import urllib.parse
+import re
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 from moviepy.editor import ImageClip, concatenate_videoclips
@@ -473,6 +474,132 @@ def create_animation(script_data: dict, topic: dict,
     clips.append(ImageClip(frame, duration=OUTRO_DUR))
 
     # Concatenate and write
+    video = concatenate_videoclips(clips, method="compose")
+    video.write_videofile(
+        output_path,
+        fps=24,
+        codec="libx264",
+        audio=False,
+        threads=4,
+        logger=None,
+        ffmpeg_params=["-crf", "23", "-preset", "fast", "-pix_fmt", "yuv420p"]
+    )
+    return output_path
+
+
+def _short_frame(phrase, short_img, pct, timer_pct):
+    SW, SH = 1080, 1920
+    img = Image.new("RGB", (SW, SH), BG)
+    d = ImageDraw.Draw(img)
+    f = _fonts()
+
+    # Draw vertical gradient background
+    for y in range(SH):
+        shade = int(y / SH * 12)
+        d.line([(0, y), (SW, y)], fill=(BG[0]+shade, BG[1]+shade+3, BG[2]+shade+5))
+    d.rectangle([0, 0, SW, 12], fill=ACCENT)
+
+    # Centered Watermark Logo near the top
+    wm = _load_watermark()
+    if wm:
+        w_w = int(wm.width * 1.5)
+        w_h = int(wm.height * 1.5)
+        wm_resized = wm.resize((w_w, w_h), Image.Resampling.LANCZOS)
+        img.paste(wm_resized, ((SW - w_w) // 2, 100), wm_resized)
+
+    # Draw short visual image
+    if short_img:
+        iw = 920
+        aspect = short_img.width / short_img.height
+        ih = int(iw / aspect)
+        if ih > 800:
+            ih = 800
+            iw = int(ih * aspect)
+        
+        short_img_resized = short_img.resize((iw, ih), Image.Resampling.LANCZOS)
+        
+        mask = Image.new("L", (iw, ih), 0)
+        draw_mask = ImageDraw.Draw(mask)
+        draw_mask.rounded_rectangle([0, 0, iw, ih], radius=24, fill=255)
+        short_img_resized.putalpha(mask)
+
+        img.paste(short_img_resized, ((SW - iw) // 2, 320), short_img_resized)
+
+    # Draw Large Centered Text Card on the bottom half
+    card_y = 1180
+    card_w = 920
+    card_h = 500
+    card_x = (SW - card_w) // 2
+    
+    d.rounded_rectangle([card_x, card_y, card_x + card_w, card_y + card_h], radius=20, fill=(20, 28, 50), outline=ACCENT, width=3)
+    
+    short_font = ImageFont.truetype("fonts/Poppins-Bold.ttf", 46) if os.path.exists("fonts/Poppins-Bold.ttf") else f["heading"]
+    
+    lh = short_font.size + 15
+    words = phrase.split()
+    lines = []
+    current_line = []
+    for word in words:
+        current_line.append(word)
+        bb = d.textbbox((0, 0), " ".join(current_line), font=short_font)
+        if bb[2] > card_w - 80 and len(current_line) > 1:
+            current_line.pop()
+            lines.append(" ".join(current_line))
+            current_line = [word]
+    if current_line:
+        lines.append(" ".join(current_line))
+
+    total_text_h = len(lines) * lh
+    start_y = card_y + (card_h - total_text_h) // 2
+    for line in lines:
+        bb = d.textbbox((0, 0), line, font=short_font)
+        line_w = bb[2]
+        d.text((card_x + (card_w - line_w) // 2, start_y), line, font=short_font, fill=(255, 255, 255))
+        start_y += lh
+
+    # Draw a bottom progress bar
+    prog_w = SW - 160
+    prog_h = 10
+    prog_y = SH - 100
+    d.rounded_rectangle([80, prog_y, 80 + prog_w, prog_y + prog_h], radius=5, fill=(30, 41, 59))
+    d.rounded_rectangle([80, prog_y, 80 + int(prog_w * timer_pct), prog_y + prog_h], radius=5, fill=ACCENT)
+
+    return np.array(img)
+
+
+def create_short_animation(script_data: dict, topic: dict,
+                           audio_duration: float, output_path: str) -> str:
+    os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
+    
+    short_data = script_data.get("short", {})
+    narration  = short_data.get("narration", "")
+    prompt     = short_data.get("image_prompt", "")
+
+    # Split narration into 3-4 semantic chunks/phrases
+    raw_phrases = [p.strip() for p in re.split(r'[.!?।]', narration) if p.strip()]
+    if not raw_phrases:
+        raw_phrases = [narration]
+
+    # Download AI image for the short
+    ref_img = _get_ai_image(prompt, os.path.dirname(output_path), "short")
+
+    n = len(raw_phrases)
+    phrase_dur = audio_duration / n
+
+    clips = []
+    elapsed = 0.0
+
+    for idx, phrase in enumerate(raw_phrases):
+        for f_idx in range(3):
+            sub_pct = (f_idx + 1) / 3
+            current_elapsed = elapsed + (sub_pct * phrase_dur)
+            timer_pct = min(current_elapsed / audio_duration, 1.0)
+            
+            frame = _short_frame(phrase, ref_img, timer_pct, timer_pct)
+            clips.append(ImageClip(frame, duration=phrase_dur / 3))
+        
+        elapsed += phrase_dur
+
     video = concatenate_videoclips(clips, method="compose")
     video.write_videofile(
         output_path,

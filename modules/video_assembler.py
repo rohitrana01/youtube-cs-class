@@ -8,7 +8,7 @@ from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips
 from config import LANGUAGE
 
 
-def assemble_video(animation_path: str, audio_path: str, output_dir: str) -> str:
+def assemble_video(animation_path: str, audio_path: str, output_dir: str, filename: str = None, is_short: bool = False) -> str:
     """
     Combine silent animation with TTS narration audio.
 
@@ -19,7 +19,8 @@ def assemble_video(animation_path: str, audio_path: str, output_dir: str) -> str
     Returns path to the final MP4.
     """
     os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, f"final_video_{LANGUAGE}.mp4")
+    out_name = filename or f"final_video_{LANGUAGE}.mp4"
+    output_path = os.path.join(output_dir, out_name)
 
     print("  [assembler] Loading video and audio…")
     video = VideoFileClip(animation_path)
@@ -43,7 +44,8 @@ def assemble_video(animation_path: str, audio_path: str, output_dir: str) -> str
     # Attach audio
     final = video.set_audio(audio)
 
-    if os.path.exists("custom_outro.mp4"):
+    # Do not append custom outro for Shorts
+    if not is_short and os.path.exists("custom_outro.mp4"):
         print("  [assembler] Appending custom outro video...")
         outro_clip = VideoFileClip("custom_outro.mp4")
         if outro_clip.size != final.size:
