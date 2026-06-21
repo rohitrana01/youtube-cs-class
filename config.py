@@ -23,8 +23,10 @@ VIDEO_PRIVACY = os.getenv("VIDEO_PRIVACY", "public")
 LANGUAGE      = os.getenv("LANGUAGE", "en").lower()
 if LANGUAGE == "hi":
     TTS_VOICE = os.getenv("TTS_VOICE", "hi-IN-MadhurNeural")
+    TTS_RATE  = os.getenv("TTS_RATE", "+12%")  # Slightly faster for natural Hindi flow
 else:
     TTS_VOICE = os.getenv("TTS_VOICE", "en-US-AriaNeural")
+    TTS_RATE  = os.getenv("TTS_RATE", "+0%")   # Standard speed for English
 
 # Paths
 OUTPUT_DIR       = "output"

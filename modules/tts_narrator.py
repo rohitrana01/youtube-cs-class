@@ -7,13 +7,13 @@ Returns the path to the generated MP3 and its duration in seconds.
 import asyncio
 import os
 import subprocess
-from config import TTS_VOICE
+from config import TTS_VOICE, TTS_RATE
 
 
-async def _generate_async(text: str, output_path: str, voice: str):
+async def _generate_async(text: str, output_path: str, voice: str, rate: str):
     """Run edge-tts and save to output_path."""
     import edge_tts
-    communicate = edge_tts.Communicate(text, voice)
+    communicate = edge_tts.Communicate(text, voice, rate=rate)
     await communicate.save(output_path)
 
 
@@ -36,16 +36,16 @@ def generate_narration(narration_text: str, output_dir: str,
     os.makedirs(output_dir, exist_ok=True)
     audio_path = os.path.join(output_dir, filename)
 
-    print(f"  [tts] Generating audio with voice: {voice}")
+    print(f"  [tts] Generating audio with voice: {voice} at speed {TTS_RATE}")
 
     try:
-        asyncio.run(_generate_async(narration_text, audio_path, voice))
+        asyncio.run(_generate_async(narration_text, audio_path, voice, TTS_RATE))
     except RuntimeError:
         # Handle case where there's already a running event loop (Jupyter, etc.)
         import nest_asyncio
         nest_asyncio.apply()
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(_generate_async(narration_text, audio_path, voice))
+        loop.run_until_complete(_generate_async(narration_text, audio_path, voice, TTS_RATE))
 
     # Get duration via ffprobe
     duration = _get_audio_duration(audio_path, narration_text)
