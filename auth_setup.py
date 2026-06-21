@@ -11,7 +11,7 @@ Steps:
   7. Copy the printed credentials into GitHub Secrets
 
 GitHub Secrets to add:
-  ANTHROPIC_API_KEY      → your Anthropic key
+  GEMINI_API_KEY         → your Gemini key
   YOUTUBE_CLIENT_ID      → printed below
   YOUTUBE_CLIENT_SECRET  → printed below
   YOUTUBE_REFRESH_TOKEN  → printed below

@@ -5,6 +5,7 @@ Handles duration mismatches (loops or trims the video to match audio length).
 """
 import os
 from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips
+from config import LANGUAGE
 
 
 def assemble_video(animation_path: str, audio_path: str, output_dir: str) -> str:
@@ -18,7 +19,7 @@ def assemble_video(animation_path: str, audio_path: str, output_dir: str) -> str
     Returns path to the final MP4.
     """
     os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, "final_video.mp4")
+    output_path = os.path.join(output_dir, f"final_video_{LANGUAGE}.mp4")
 
     print("  [assembler] Loading video and audio…")
     video = VideoFileClip(animation_path)
@@ -42,6 +43,13 @@ def assemble_video(animation_path: str, audio_path: str, output_dir: str) -> str
     # Attach audio
     final = video.set_audio(audio)
 
+    if os.path.exists("custom_outro.mp4"):
+        print("  [assembler] Appending custom outro video...")
+        outro_clip = VideoFileClip("custom_outro.mp4")
+        if outro_clip.size != final.size:
+            outro_clip = outro_clip.resize(final.size)
+        final = concatenate_videoclips([final, outro_clip])
+
     print(f"  [assembler] Writing final video → {output_path}")
     final.write_videofile(
         output_path,
@@ -50,7 +58,7 @@ def assemble_video(animation_path: str, audio_path: str, output_dir: str) -> str
         audio_codec="aac",
         threads=4,
         logger=None,
-        ffmpeg_params=["-crf", "23", "-preset", "fast", "-movflags", "+faststart"]
+        ffmpeg_params=["-crf", "23", "-preset", "fast", "-movflags", "+faststart", "-pix_fmt", "yuv420p"]
     )
 
     # Clean up

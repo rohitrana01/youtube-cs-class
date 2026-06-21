@@ -16,7 +16,7 @@ import json
 import shutil
 from datetime import datetime, timezone
 
-from config import OUTPUT_DIR, CURRICULUM_FILE
+from config import OUTPUT_DIR, CURRICULUM_FILE, LANGUAGE
 from modules.script_generator   import generate_script
 from modules.tts_narrator       import generate_narration
 from modules.animator           import create_animation
@@ -143,13 +143,13 @@ def run():
     # ── Optional: clean up large intermediates ───────────────────────────────
     keep_files = ["script.json", "thumbnail.jpg"]
     if dry_run:
-        keep_files.append("final_video.mp4")
+        keep_files.append(f"final_video_{LANGUAGE}.mp4")
     _cleanup(out, keep=keep_files)
 
 
 def _cleanup(out_dir: str, keep: list[str]):
     """Remove large video intermediates to save disk space."""
-    for fname in ["animation.mp4", "narration.mp3", "final_video.mp4"]:
+    for fname in ["animation.mp4", "narration.mp3", f"final_video_{LANGUAGE}.mp4"]:
         if fname not in keep:
             p = os.path.join(out_dir, fname)
             if os.path.exists(p):

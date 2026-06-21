@@ -12,6 +12,10 @@ on:
         description: 'Dry run (skip actual upload)'
         required: false
         default: 'false'
+      language:
+        description: 'Language of the video (en or hi)'
+        required: false
+        default: 'hi'
 
 jobs:
   upload:
@@ -52,13 +56,13 @@ jobs:
       # ── Validate secrets ─────────────────────────────────────────────────
       - name: Check required secrets
         run: |
-          [ -z "$ANTHROPIC_API_KEY" ]      && echo "❌ ANTHROPIC_API_KEY missing"      && exit 1 || true
+          [ -z "$GEMINI_API_KEY" ]         && echo "❌ GEMINI_API_KEY missing"         && exit 1 || true
           [ -z "$YOUTUBE_CLIENT_ID" ]      && echo "❌ YOUTUBE_CLIENT_ID missing"      && exit 1 || true
           [ -z "$YOUTUBE_CLIENT_SECRET" ]  && echo "❌ YOUTUBE_CLIENT_SECRET missing"  && exit 1 || true
           [ -z "$YOUTUBE_REFRESH_TOKEN" ]  && echo "❌ YOUTUBE_REFRESH_TOKEN missing"  && exit 1 || true
           echo "✅ All secrets present"
         env:
-          ANTHROPIC_API_KEY:      ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY:         ${{ secrets.GEMINI_API_KEY }}
           YOUTUBE_CLIENT_ID:      ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET:  ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN:  ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
@@ -66,12 +70,13 @@ jobs:
       # ── Run pipeline ─────────────────────────────────────────────────────
       - name: Run automation pipeline
         env:
-          ANTHROPIC_API_KEY:      ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY:         ${{ secrets.GEMINI_API_KEY }}
           YOUTUBE_CLIENT_ID:      ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET:  ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN:  ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
           CHANNEL_NAME:           ${{ secrets.CHANNEL_NAME }}
           TTS_VOICE:              ${{ secrets.TTS_VOICE }}
+          LANGUAGE:               ${{ github.event.inputs.language || vars.LANGUAGE || 'hi' }}
           VIDEO_PRIVACY:          ${{ vars.VIDEO_PRIVACY || 'public' }}
           DRY_RUN:                ${{ github.event.inputs.dry_run || 'false' }}
         run: python pipeline.py

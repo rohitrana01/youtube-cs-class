@@ -1,40 +1,35 @@
 {
-  "course": "Complete Computer Science Course",
-  "description": "From Basic to Advanced — Daily 5-Minute Animated Videos",
+  "course": "Complete Computer Literacy Course",
+  "description": "From Hardware Basics to Modern AI Tools — No Coding Required",
   "topics": [
     {
       "id": "cs001",
       "day": 1,
-      "title": "What is a Computer?",
+      "title": "What is a Computer & How it Works",
       "module": "Computer Basics",
       "level": "Beginner",
       "tags": [
         "computer basics",
-        "introduction",
-        "hardware"
-      ],
-      "uploaded": true,
-      "channel": "LearnCS Daily",
-      "video_id": "YZ-A6TQRn1o",
-      "upload_date": "2026-06-14T17:52:01.969368+00:00"
+        "hardware",
+        "intro"
+      ]
     },
     {
       "id": "cs002",
       "day": 2,
-      "title": "History of Computers",
+      "title": "History and Evolution of Computers",
       "module": "Computer Basics",
       "level": "Beginner",
       "tags": [
         "history",
         "ENIAC",
         "generations"
-      ],
-      "uploaded": false
+      ]
     },
     {
       "id": "cs003",
       "day": 3,
-      "title": "Input and Output Devices",
+      "title": "Understanding Input & Output Devices",
       "module": "Computer Basics",
       "level": "Beginner",
       "tags": [
@@ -42,27 +37,25 @@
         "mouse",
         "monitor",
         "IO"
-      ],
-      "uploaded": false
+      ]
     },
     {
       "id": "cs004",
       "day": 4,
-      "title": "The CPU Explained",
+      "title": "How the CPU (Brain of Computer) Works",
       "module": "Computer Basics",
       "level": "Beginner",
       "tags": [
         "CPU",
         "processor",
         "cores",
-        "clock speed"
-      ],
-      "uploaded": false
+        "silicon"
+      ]
     },
     {
       "id": "cs005",
       "day": 5,
-      "title": "RAM vs Storage — Memory Types",
+      "title": "Understanding RAM vs Storage (SSD/HDD)",
       "module": "Computer Basics",
       "level": "Beginner",
       "tags": [
@@ -70,1342 +63,1216 @@
         "SSD",
         "HDD",
         "memory"
-      ],
-      "uploaded": false
+      ]
     },
     {
       "id": "cs006",
       "day": 6,
-      "title": "How Operating Systems Work",
+      "title": "Motherboard & Essential PC Components",
       "module": "Computer Basics",
       "level": "Beginner",
       "tags": [
-        "OS",
-        "Windows",
-        "Linux",
-        "macOS"
-      ],
-      "uploaded": false
+        "motherboard",
+        "chassis",
+        "hardware"
+      ]
     },
     {
       "id": "cs007",
       "day": 7,
-      "title": "File Systems and Storage",
+      "title": "How Power Supply Units (PSU) Work",
       "module": "Computer Basics",
       "level": "Beginner",
       "tags": [
-        "files",
-        "folders",
-        "NTFS",
-        "ext4"
-      ],
-      "uploaded": false
+        "power",
+        "PSU",
+        "electricity",
+        "safety"
+      ]
     },
     {
       "id": "cs008",
       "day": 8,
-      "title": "Computer Networks Basics",
+      "title": "Explaining Ports and Cables (HDMI, USB-C, DisplayPort)",
       "module": "Computer Basics",
       "level": "Beginner",
       "tags": [
-        "networking",
-        "LAN",
-        "WAN",
-        "router"
-      ],
-      "uploaded": false
+        "cables",
+        "USB-C",
+        "HDMI",
+        "thunderbolt"
+      ]
     },
     {
       "id": "cs009",
       "day": 9,
-      "title": "How the Internet Works",
+      "title": "Graphics Cards (GPU) & Display Basics",
       "module": "Computer Basics",
       "level": "Beginner",
       "tags": [
-        "internet",
-        "TCP/IP",
-        "packets",
-        "DNS"
-      ],
-      "uploaded": false
+        "GPU",
+        "graphics card",
+        "nvidia",
+        "display"
+      ]
     },
     {
       "id": "cs010",
       "day": 10,
-      "title": "How Web Browsers Work",
+      "title": "How to Safely Clean & Maintain Your PC",
       "module": "Computer Basics",
       "level": "Beginner",
       "tags": [
-        "browser",
-        "HTTP",
-        "HTML rendering",
-        "DNS"
-      ],
-      "uploaded": false
+        "maintenance",
+        "cleaning",
+        "thermal paste"
+      ]
     },
     {
       "id": "cs011",
       "day": 11,
-      "title": "What is Programming?",
-      "module": "Programming Fundamentals",
+      "title": "Troubleshooting Common Hardware Problems",
+      "module": "Computer Basics",
       "level": "Beginner",
       "tags": [
-        "programming",
-        "code",
-        "algorithms",
-        "languages"
-      ],
-      "uploaded": false
+        "troubleshooting",
+        "hardware error",
+        "no display"
+      ]
     },
     {
       "id": "cs012",
       "day": 12,
-      "title": "Python Setup and Your First Program",
-      "module": "Programming Fundamentals",
+      "title": "PC Buying Guide: RAM, CPU, Storage Selection",
+      "module": "Computer Basics",
       "level": "Beginner",
       "tags": [
-        "python",
-        "hello world",
-        "setup",
-        "IDE"
-      ],
-      "uploaded": false
+        "buying guide",
+        "specs",
+        "build PC"
+      ]
     },
     {
       "id": "cs013",
       "day": 13,
-      "title": "Variables and Data Types in Python",
-      "module": "Programming Fundamentals",
+      "title": "Understanding Laptops vs Desktops",
+      "module": "Computer Basics",
       "level": "Beginner",
       "tags": [
-        "variables",
-        "int",
-        "float",
-        "string",
-        "boolean"
-      ],
-      "uploaded": false
+        "laptop",
+        "desktop",
+        "portability",
+        "upgrade"
+      ]
     },
     {
       "id": "cs014",
       "day": 14,
-      "title": "User Input and Print Output",
-      "module": "Programming Fundamentals",
+      "title": "Printers, Scanners & Modern Printing Tech",
+      "module": "Computer Basics",
       "level": "Beginner",
       "tags": [
-        "input",
-        "print",
-        "python basics"
-      ],
-      "uploaded": false
+        "printer",
+        "inkjet",
+        "laser",
+        "scanner"
+      ]
     },
     {
       "id": "cs015",
       "day": 15,
-      "title": "Operators and Expressions",
-      "module": "Programming Fundamentals",
+      "title": "Sound Cards, Audio Devices & Microphones",
+      "module": "Computer Basics",
       "level": "Beginner",
       "tags": [
-        "operators",
-        "arithmetic",
-        "comparison",
-        "logical"
-      ],
-      "uploaded": false
+        "audio",
+        "sound card",
+        "mic",
+        "speakers"
+      ]
     },
     {
       "id": "cs016",
       "day": 16,
-      "title": "If, Elif, Else — Conditional Logic",
-      "module": "Programming Fundamentals",
+      "title": "Introduction to Operating Systems (Windows, macOS, Linux)",
+      "module": "Operating Systems",
       "level": "Beginner",
       "tags": [
-        "conditionals",
-        "if else",
-        "logic",
-        "branching"
-      ],
-      "uploaded": false
+        "OS",
+        "windows",
+        "macos",
+        "linux"
+      ]
     },
     {
       "id": "cs017",
       "day": 17,
-      "title": "For Loops in Python",
-      "module": "Programming Fundamentals",
+      "title": "File Systems & Organizing Files (Folders, Search, Extensions)",
+      "module": "Operating Systems",
       "level": "Beginner",
       "tags": [
-        "for loop",
-        "iteration",
-        "range",
-        "python"
-      ],
-      "uploaded": false
+        "file system",
+        "extensions",
+        "folders"
+      ]
     },
     {
       "id": "cs018",
       "day": 18,
-      "title": "While Loops in Python",
-      "module": "Programming Fundamentals",
+      "title": "Mastering Windows Desktop & Control Panel Settings",
+      "module": "Operating Systems",
       "level": "Beginner",
       "tags": [
-        "while loop",
-        "iteration",
-        "break",
-        "continue"
-      ],
-      "uploaded": false
+        "windows",
+        "settings",
+        "control panel"
+      ]
     },
     {
       "id": "cs019",
       "day": 19,
-      "title": "Functions — Write Once, Reuse Anywhere",
-      "module": "Programming Fundamentals",
+      "title": "Mastering macOS Desktop & System Preferences",
+      "module": "Operating Systems",
       "level": "Beginner",
       "tags": [
-        "functions",
-        "def",
-        "parameters",
-        "return"
-      ],
-      "uploaded": false
+        "macos",
+        "finder",
+        "system preferences"
+      ]
     },
     {
       "id": "cs020",
       "day": 20,
-      "title": "Scope and Namespaces",
-      "module": "Programming Fundamentals",
+      "title": "Essential Keyboard Shortcuts for Windows & Mac",
+      "module": "Operating Systems",
       "level": "Beginner",
       "tags": [
-        "scope",
-        "local",
-        "global",
-        "namespace"
-      ],
-      "uploaded": false
+        "shortcuts",
+        "keyboard",
+        "productivity"
+      ]
     },
     {
       "id": "cs021",
       "day": 21,
-      "title": "Lists in Python",
-      "module": "Programming Fundamentals",
-      "level": "Beginner",
+      "title": "Dynamic Windows Explorer Tricks & Customization",
+      "module": "Operating Systems",
+      "level": "Intermediate",
       "tags": [
-        "lists",
-        "append",
-        "indexing",
-        "slicing"
-      ],
-      "uploaded": false
+        "file explorer",
+        "customization",
+        "quick access"
+      ]
     },
     {
       "id": "cs022",
       "day": 22,
-      "title": "Tuples and Sets",
-      "module": "Programming Fundamentals",
-      "level": "Beginner",
+      "title": "Task Manager & Activity Monitor: Managing Running Apps",
+      "module": "Operating Systems",
+      "level": "Intermediate",
       "tags": [
-        "tuples",
-        "sets",
-        "immutable",
-        "unique"
-      ],
-      "uploaded": false
+        "task manager",
+        "activity monitor",
+        "force quit"
+      ]
     },
     {
       "id": "cs023",
       "day": 23,
-      "title": "Dictionaries in Python",
-      "module": "Programming Fundamentals",
+      "title": "Software Installation & Safe Downloading Best Practices",
+      "module": "Operating Systems",
       "level": "Beginner",
       "tags": [
-        "dictionaries",
-        "key value",
-        "dict",
-        "hash map"
-      ],
-      "uploaded": false
+        "install",
+        "download",
+        "safety",
+        "bloatware"
+      ]
     },
     {
       "id": "cs024",
       "day": 24,
-      "title": "String Methods and Formatting",
-      "module": "Programming Fundamentals",
+      "title": "Customizing OS Settings for Accessibility & Comfort",
+      "module": "Operating Systems",
       "level": "Beginner",
       "tags": [
-        "strings",
-        "format",
-        "f-string",
-        "methods"
-      ],
-      "uploaded": false
+        "accessibility",
+        "font size",
+        "dark mode",
+        "contrast"
+      ]
     },
     {
       "id": "cs025",
       "day": 25,
-      "title": "File Handling in Python",
-      "module": "Programming Fundamentals",
+      "title": "Safe OS Updating and Patching Guide",
+      "module": "Operating Systems",
       "level": "Beginner",
       "tags": [
-        "files",
-        "read",
-        "write",
-        "open"
-      ],
-      "uploaded": false
+        "update",
+        "patches",
+        "windows update"
+      ]
     },
     {
       "id": "cs026",
       "day": 26,
-      "title": "Arrays and Lists — Data Structures Intro",
-      "module": "Data Structures",
+      "title": "Device Drivers: What They Are & How to Update Them",
+      "module": "Operating Systems",
       "level": "Intermediate",
       "tags": [
-        "arrays",
-        "data structures",
-        "indexing",
-        "complexity"
-      ],
-      "uploaded": false
+        "drivers",
+        "hardware",
+        "device manager"
+      ]
     },
     {
       "id": "cs027",
       "day": 27,
-      "title": "Linked Lists Explained",
-      "module": "Data Structures",
+      "title": "Introduction to Command Line (Safe Commands for Users)",
+      "module": "Operating Systems",
       "level": "Intermediate",
       "tags": [
-        "linked list",
-        "nodes",
-        "pointers",
-        "singly linked"
-      ],
-      "uploaded": false
+        "CLI",
+        "cmd",
+        "terminal",
+        "ping",
+        "ipconfig"
+      ]
     },
     {
       "id": "cs028",
       "day": 28,
-      "title": "Doubly Linked Lists",
-      "module": "Data Structures",
+      "title": "System Restore & Windows Backup Tools",
+      "module": "Operating Systems",
       "level": "Intermediate",
       "tags": [
-        "doubly linked list",
-        "prev next",
-        "traversal"
-      ],
-      "uploaded": false
+        "backup",
+        "restore point",
+        "recovery"
+      ]
     },
     {
       "id": "cs029",
       "day": 29,
-      "title": "Stacks — LIFO Data Structure",
-      "module": "Data Structures",
+      "title": "Storage Formatting & Disk Partitioning Basics",
+      "module": "Operating Systems",
       "level": "Intermediate",
       "tags": [
-        "stack",
-        "LIFO",
-        "push pop",
-        "call stack"
-      ],
-      "uploaded": false
+        "formatting",
+        "partitions",
+        "NTFS",
+        "FAT32"
+      ]
     },
     {
       "id": "cs030",
       "day": 30,
-      "title": "Queues — FIFO Data Structure",
-      "module": "Data Structures",
+      "title": "Troubleshooting Common OS Crashes & Errors (BSOD)",
+      "module": "Operating Systems",
       "level": "Intermediate",
       "tags": [
-        "queue",
-        "FIFO",
-        "enqueue dequeue",
-        "BFS"
-      ],
-      "uploaded": false
+        "BSOD",
+        "crashes",
+        "safe mode"
+      ]
     },
     {
       "id": "cs031",
       "day": 31,
-      "title": "Hash Tables and Hashing",
-      "module": "Data Structures",
-      "level": "Intermediate",
+      "title": "How the Internet Works (Undersea Cables, Satellite, GPS)",
+      "module": "Internet & Cloud",
+      "level": "Beginner",
       "tags": [
-        "hash table",
-        "hash function",
-        "collision",
-        "O(1)"
-      ],
-      "uploaded": false
+        "internet",
+        "network",
+        "cables",
+        "satellites"
+      ]
     },
     {
       "id": "cs032",
       "day": 32,
-      "title": "Binary Trees Explained",
-      "module": "Data Structures",
-      "level": "Intermediate",
+      "title": "Web Browsers (Chrome, Firefox, Safari, Edge) Comparison",
+      "module": "Internet & Cloud",
+      "level": "Beginner",
       "tags": [
-        "binary tree",
-        "root",
-        "leaf",
-        "traversal"
-      ],
-      "uploaded": false
+        "browsers",
+        "chrome",
+        "firefox",
+        "safari"
+      ]
     },
     {
       "id": "cs033",
       "day": 33,
-      "title": "Binary Search Trees",
-      "module": "Data Structures",
-      "level": "Intermediate",
+      "title": "Browser Extensions & Personal Customization",
+      "module": "Internet & Cloud",
+      "level": "Beginner",
       "tags": [
-        "BST",
-        "insert",
-        "search",
-        "delete"
-      ],
-      "uploaded": false
+        "extensions",
+        "adblock",
+        "productivity"
+      ]
     },
     {
       "id": "cs034",
       "day": 34,
-      "title": "AVL Trees — Self-Balancing BST",
-      "module": "Data Structures",
+      "title": "Advanced Google Search Operators & Tricks",
+      "module": "Internet & Cloud",
       "level": "Intermediate",
       "tags": [
-        "AVL tree",
-        "balanced",
-        "rotations",
-        "height"
-      ],
-      "uploaded": false
+        "google search",
+        "operators",
+        "search tricks"
+      ]
     },
     {
       "id": "cs035",
       "day": 35,
-      "title": "Heaps and Priority Queues",
-      "module": "Data Structures",
+      "title": "How Email Works (IMAP, POP3, SMTP)",
+      "module": "Internet & Cloud",
       "level": "Intermediate",
       "tags": [
-        "heap",
-        "min heap",
-        "max heap",
-        "heapify"
-      ],
-      "uploaded": false
+        "email",
+        "imap",
+        "pop3",
+        "smtp"
+      ]
     },
     {
       "id": "cs036",
       "day": 36,
-      "title": "Graphs — Introduction",
-      "module": "Data Structures",
-      "level": "Intermediate",
+      "title": "Email Management & Smart Inbox Hacks",
+      "module": "Internet & Cloud",
+      "level": "Beginner",
       "tags": [
-        "graphs",
-        "vertices",
-        "edges",
-        "directed undirected"
-      ],
-      "uploaded": false
+        "email",
+        "inbox zero",
+        "organization",
+        "spam filter"
+      ]
     },
     {
       "id": "cs037",
       "day": 37,
-      "title": "Graph Representations",
-      "module": "Data Structures",
-      "level": "Intermediate",
+      "title": "Cloud Storage Basics: Google Drive & OneDrive",
+      "module": "Internet & Cloud",
+      "level": "Beginner",
       "tags": [
-        "adjacency matrix",
-        "adjacency list",
-        "graph storage"
-      ],
-      "uploaded": false
+        "cloud storage",
+        "google drive",
+        "onedrive",
+        "sync"
+      ]
     },
     {
       "id": "cs038",
       "day": 38,
-      "title": "Tries — Prefix Trees",
-      "module": "Data Structures",
-      "level": "Intermediate",
+      "title": "Online Collaboration Tools (Google Docs, Sheets, Slides)",
+      "module": "Internet & Cloud",
+      "level": "Beginner",
       "tags": [
-        "trie",
-        "prefix tree",
-        "autocomplete",
-        "strings"
-      ],
-      "uploaded": false
+        "collaboration",
+        "google docs",
+        "sharing",
+        "real-time"
+      ]
     },
     {
       "id": "cs039",
       "day": 39,
-      "title": "Deque and Circular Buffers",
-      "module": "Data Structures",
-      "level": "Intermediate",
+      "title": "Understanding Wi-Fi vs Ethernet & Network Cables",
+      "module": "Internet & Cloud",
+      "level": "Beginner",
       "tags": [
-        "deque",
-        "circular buffer",
-        "double ended queue"
-      ],
-      "uploaded": false
+        "wifi",
+        "ethernet",
+        "router",
+        "speed"
+      ]
     },
     {
       "id": "cs040",
       "day": 40,
-      "title": "When to Use Which Data Structure",
-      "module": "Data Structures",
+      "title": "Router Setup & Managing Home Wi-Fi Network",
+      "module": "Internet & Cloud",
       "level": "Intermediate",
       "tags": [
-        "data structure comparison",
-        "Big O",
-        "choosing"
-      ],
-      "uploaded": false
+        "router",
+        "wifi password",
+        "admin panel",
+        "guest network"
+      ]
     },
     {
       "id": "cs041",
       "day": 41,
-      "title": "What is an Algorithm?",
-      "module": "Algorithms",
+      "title": "Dynamic Domain Names, URLs, and IP Addresses",
+      "module": "Internet & Cloud",
       "level": "Intermediate",
       "tags": [
-        "algorithm",
-        "problem solving",
-        "steps",
-        "pseudocode"
-      ],
-      "uploaded": false
+        "DNS",
+        "IP address",
+        "URL",
+        "domain"
+      ]
     },
     {
       "id": "cs042",
       "day": 42,
-      "title": "Big O Notation Explained",
-      "module": "Algorithms",
-      "level": "Intermediate",
+      "title": "Bookmarks, History & Syncing Across Devices",
+      "module": "Internet & Cloud",
+      "level": "Beginner",
       "tags": [
-        "Big O",
-        "time complexity",
-        "space complexity",
-        "O(n)"
-      ],
-      "uploaded": false
+        "bookmarks",
+        "browser sync",
+        "browsing history"
+      ]
     },
     {
       "id": "cs043",
       "day": 43,
-      "title": "Linear Search Algorithm",
-      "module": "Algorithms",
-      "level": "Intermediate",
+      "title": "Virtual Meetings: Zoom, Teams & Google Meet Mastery",
+      "module": "Internet & Cloud",
+      "level": "Beginner",
       "tags": [
-        "linear search",
-        "O(n)",
-        "sequential",
-        "brute force"
-      ],
-      "uploaded": false
+        "zoom",
+        "teams",
+        "virtual meetings",
+        "screen sharing"
+      ]
     },
     {
       "id": "cs044",
       "day": 44,
-      "title": "Binary Search Algorithm",
-      "module": "Algorithms",
-      "level": "Intermediate",
+      "title": "Online Shopping Safety & Avoiding E-commerce Scams",
+      "module": "Internet & Cloud",
+      "level": "Beginner",
       "tags": [
-        "binary search",
-        "O(log n)",
-        "sorted",
-        "divide conquer"
-      ],
-      "uploaded": false
+        "online shopping",
+        "credit card",
+        "security",
+        "scams"
+      ]
     },
     {
       "id": "cs045",
       "day": 45,
-      "title": "Bubble Sort — Simplest Sorting",
-      "module": "Algorithms",
-      "level": "Intermediate",
+      "title": "Fast Speed Tests & Troubleshooting Internet Slowness",
+      "module": "Internet & Cloud",
+      "level": "Beginner",
       "tags": [
-        "bubble sort",
-        "sorting",
-        "O(n2)",
-        "swapping"
-      ],
-      "uploaded": false
+        "speed test",
+        "slowness",
+        "network reboot",
+        "ping"
+      ]
     },
     {
       "id": "cs046",
       "day": 46,
-      "title": "Selection Sort",
-      "module": "Algorithms",
-      "level": "Intermediate",
+      "title": "Password Safety & Using Password Managers",
+      "module": "Cybersecurity",
+      "level": "Beginner",
       "tags": [
-        "selection sort",
-        "minimum",
-        "O(n2)",
-        "in-place"
-      ],
-      "uploaded": false
+        "passwords",
+        "security",
+        "1password",
+        "bitwarden"
+      ]
     },
     {
       "id": "cs047",
       "day": 47,
-      "title": "Insertion Sort",
-      "module": "Algorithms",
-      "level": "Intermediate",
+      "title": "Two-Factor Authentication (2FA) & MFA Setup",
+      "module": "Cybersecurity",
+      "level": "Beginner",
       "tags": [
-        "insertion sort",
-        "O(n2)",
-        "online",
-        "cards"
-      ],
-      "uploaded": false
+        "2FA",
+        "MFA",
+        "authenticator",
+        "security"
+      ]
     },
     {
       "id": "cs048",
       "day": 48,
-      "title": "Merge Sort — Divide and Conquer",
-      "module": "Algorithms",
-      "level": "Intermediate",
+      "title": "Identifying Phishing Emails and Fake Sites",
+      "module": "Cybersecurity",
+      "level": "Beginner",
       "tags": [
-        "merge sort",
-        "O(n log n)",
-        "divide conquer",
-        "recursion"
-      ],
-      "uploaded": false
+        "phishing",
+        "scams",
+        "email safety"
+      ]
     },
     {
       "id": "cs049",
       "day": 49,
-      "title": "Quick Sort Algorithm",
-      "module": "Algorithms",
-      "level": "Intermediate",
+      "title": "Malware, Viruses, Trojans & Antivirus Tools",
+      "module": "Cybersecurity",
+      "level": "Beginner",
       "tags": [
-        "quick sort",
-        "pivot",
-        "partition",
-        "O(n log n)"
-      ],
-      "uploaded": false
+        "malware",
+        "virus",
+        "trojan",
+        "defender",
+        "antivirus"
+      ]
     },
     {
       "id": "cs050",
       "day": 50,
-      "title": "Heap Sort",
-      "module": "Algorithms",
+      "title": "Firewalls: What They Are and How They Protect You",
+      "module": "Cybersecurity",
       "level": "Intermediate",
       "tags": [
-        "heap sort",
-        "heapify",
-        "O(n log n)",
-        "in-place"
-      ],
-      "uploaded": false
+        "firewall",
+        "security",
+        "network barrier"
+      ]
     },
     {
       "id": "cs051",
       "day": 51,
-      "title": "Recursion Explained",
-      "module": "Algorithms",
-      "level": "Intermediate",
+      "title": "VPNs (Virtual Private Networks): Privacy & Geo-Blocking",
+      "module": "Cybersecurity",
+      "level": "Beginner",
       "tags": [
-        "recursion",
-        "base case",
-        "stack overflow",
-        "fibonacci"
-      ],
-      "uploaded": false
+        "VPN",
+        "privacy",
+        "geo-block",
+        "encryption"
+      ]
     },
     {
       "id": "cs052",
       "day": 52,
-      "title": "Dynamic Programming Introduction",
-      "module": "Algorithms",
-      "level": "Intermediate",
+      "title": "Tracking & Cookies: Browser Incognito Mode Myths",
+      "module": "Cybersecurity",
+      "level": "Beginner",
       "tags": [
-        "dynamic programming",
-        "memoization",
-        "tabulation",
-        "DP"
-      ],
-      "uploaded": false
+        "tracking",
+        "cookies",
+        "incognito",
+        "privacy"
+      ]
     },
     {
       "id": "cs053",
       "day": 53,
-      "title": "Greedy Algorithms",
-      "module": "Algorithms",
-      "level": "Intermediate",
+      "title": "Secure Browsing: HTTP vs HTTPS & SSL Certificates",
+      "module": "Cybersecurity",
+      "level": "Beginner",
       "tags": [
-        "greedy",
-        "optimal",
-        "coin change",
-        "interval scheduling"
-      ],
-      "uploaded": false
+        "HTTPS",
+        "SSL",
+        "encryption",
+        "browser padlock"
+      ]
     },
     {
       "id": "cs054",
       "day": 54,
-      "title": "BFS — Breadth-First Search",
-      "module": "Algorithms",
-      "level": "Intermediate",
+      "title": "Wi-Fi Security: Public Wi-Fi Dangers & Protection",
+      "module": "Cybersecurity",
+      "level": "Beginner",
       "tags": [
-        "BFS",
-        "graph traversal",
-        "queue",
-        "shortest path"
-      ],
-      "uploaded": false
+        "public wifi",
+        "hotspot",
+        "security",
+        "eavesdropping"
+      ]
     },
     {
       "id": "cs055",
       "day": 55,
-      "title": "DFS — Depth-First Search",
-      "module": "Algorithms",
-      "level": "Intermediate",
+      "title": "Backing Up Your Data: 3-2-1 Backup Rule",
+      "module": "Cybersecurity",
+      "level": "Beginner",
       "tags": [
-        "DFS",
-        "graph traversal",
-        "stack",
-        "backtracking"
-      ],
-      "uploaded": false
+        "backup",
+        "disaster recovery",
+        "external drive"
+      ]
     },
     {
       "id": "cs056",
       "day": 56,
-      "title": "Classes and Objects in Python",
-      "module": "Object-Oriented Programming",
-      "level": "Intermediate",
+      "title": "Mobile Security: Securing iOS & Android Phones",
+      "module": "Cybersecurity",
+      "level": "Beginner",
       "tags": [
-        "OOP",
-        "classes",
-        "objects",
-        "instances"
-      ],
-      "uploaded": false
+        "mobile security",
+        "find my",
+        "encryption",
+        "biometrics"
+      ]
     },
     {
       "id": "cs057",
       "day": 57,
-      "title": "Constructors and Instance Methods",
-      "module": "Object-Oriented Programming",
-      "level": "Intermediate",
+      "title": "Identifying Online Scams (Giveaways, Tech Support)",
+      "module": "Cybersecurity",
+      "level": "Beginner",
       "tags": [
-        "__init__",
-        "self",
-        "methods",
-        "attributes"
-      ],
-      "uploaded": false
+        "scams",
+        "tech support scam",
+        "social engineering"
+      ]
     },
     {
       "id": "cs058",
       "day": 58,
-      "title": "Inheritance in OOP",
-      "module": "Object-Oriented Programming",
-      "level": "Intermediate",
+      "title": "Social Media Privacy Settings (Facebook, Instagram, Google)",
+      "module": "Cybersecurity",
+      "level": "Beginner",
       "tags": [
-        "inheritance",
-        "parent child",
-        "super",
-        "extends"
-      ],
-      "uploaded": false
+        "privacy settings",
+        "social media",
+        "data sharing"
+      ]
     },
     {
       "id": "cs059",
       "day": 59,
-      "title": "Polymorphism and Method Overriding",
-      "module": "Object-Oriented Programming",
+      "title": "Ransomware: How it Works & How to Stay Safe",
+      "module": "Cybersecurity",
       "level": "Intermediate",
       "tags": [
-        "polymorphism",
-        "override",
-        "duck typing",
-        "interfaces"
-      ],
-      "uploaded": false
+        "ransomware",
+        "extortion",
+        "decryption"
+      ]
     },
     {
       "id": "cs060",
       "day": 60,
-      "title": "Encapsulation and Abstraction",
-      "module": "Object-Oriented Programming",
+      "title": "Data Recovery: Recovering Deleted Files Safely",
+      "module": "Cybersecurity",
       "level": "Intermediate",
       "tags": [
-        "encapsulation",
-        "private",
-        "abstraction",
-        "getter setter"
-      ],
-      "uploaded": false
+        "data recovery",
+        "recycle bin",
+        "undelete",
+        "storage"
+      ]
     },
     {
       "id": "cs061",
       "day": 61,
-      "title": "Magic Methods and Dunder Methods",
-      "module": "Object-Oriented Programming",
-      "level": "Intermediate",
+      "title": "Word Processing: Microsoft Word & Google Docs Basics",
+      "module": "Productivity Tools",
+      "level": "Beginner",
       "tags": [
-        "dunder",
-        "__str__",
-        "__len__",
-        "operator overload"
-      ],
-      "uploaded": false
+        "word",
+        "docs",
+        "writing",
+        "formatting"
+      ]
     },
     {
       "id": "cs062",
       "day": 62,
-      "title": "Design Pattern: Singleton",
-      "module": "Object-Oriented Programming",
-      "level": "Advanced",
+      "title": "Formatting Documents, Styles, and Page Layouts",
+      "module": "Productivity Tools",
+      "level": "Beginner",
       "tags": [
-        "singleton",
-        "design pattern",
-        "instance",
-        "GOF"
-      ],
-      "uploaded": false
+        "document formatting",
+        "styles",
+        "page size",
+        "margins"
+      ]
     },
     {
       "id": "cs063",
       "day": 63,
-      "title": "Design Pattern: Factory",
-      "module": "Object-Oriented Programming",
-      "level": "Advanced",
+      "title": "Spreadsheet Basics: Microsoft Excel & Google Sheets",
+      "module": "Productivity Tools",
+      "level": "Beginner",
       "tags": [
-        "factory pattern",
-        "creational",
-        "abstraction",
-        "OOP"
-      ],
-      "uploaded": false
+        "excel",
+        "sheets",
+        "cells",
+        "rows",
+        "columns"
+      ]
     },
     {
       "id": "cs064",
       "day": 64,
-      "title": "Design Pattern: Observer",
-      "module": "Object-Oriented Programming",
-      "level": "Advanced",
+      "title": "Excel Formulas for Beginners (SUM, AVERAGE, COUNT)",
+      "module": "Productivity Tools",
+      "level": "Beginner",
       "tags": [
-        "observer",
-        "event driven",
-        "pub sub",
-        "callbacks"
-      ],
-      "uploaded": false
+        "excel formulas",
+        "sum",
+        "average",
+        "math"
+      ]
     },
     {
       "id": "cs065",
       "day": 65,
-      "title": "SOLID Principles in Practice",
-      "module": "Object-Oriented Programming",
-      "level": "Advanced",
+      "title": "Excel Formatting, Sorting, and Filtering Data",
+      "module": "Productivity Tools",
+      "level": "Beginner",
       "tags": [
-        "SOLID",
-        "clean code",
-        "SRP",
-        "DIP",
-        "OCP"
-      ],
-      "uploaded": false
+        "excel formatting",
+        "sorting",
+        "filtering",
+        "data tables"
+      ]
     },
     {
       "id": "cs066",
       "day": 66,
-      "title": "HTML Basics — Structure of the Web",
-      "module": "Web Development",
-      "level": "Beginner",
+      "title": "Creating Charts & Graphs to Visualize Data",
+      "module": "Productivity Tools",
+      "level": "Intermediate",
       "tags": [
-        "HTML",
-        "tags",
-        "elements",
-        "web basics"
-      ],
-      "uploaded": false
+        "charts",
+        "graphs",
+        "data visualization",
+        "excel"
+      ]
     },
     {
       "id": "cs067",
       "day": 67,
-      "title": "HTML Forms and Tables",
-      "module": "Web Development",
+      "title": "Presentation Design: PowerPoint & Slides Basics",
+      "module": "Productivity Tools",
       "level": "Beginner",
       "tags": [
-        "HTML forms",
-        "input",
-        "table",
-        "semantic HTML"
-      ],
-      "uploaded": false
+        "powerpoint",
+        "slides",
+        "presentation",
+        "layouts"
+      ]
     },
     {
       "id": "cs068",
       "day": 68,
-      "title": "CSS Basics — Styling Web Pages",
-      "module": "Web Development",
-      "level": "Beginner",
+      "title": "Creating Premium, Clean Slides with Animations",
+      "module": "Productivity Tools",
+      "level": "Intermediate",
       "tags": [
-        "CSS",
-        "selectors",
-        "properties",
-        "styling"
-      ],
-      "uploaded": false
+        "presentation design",
+        "transitions",
+        "slide deck"
+      ]
     },
     {
       "id": "cs069",
       "day": 69,
-      "title": "CSS Flexbox Layout",
-      "module": "Web Development",
-      "level": "Intermediate",
+      "title": "PDF Files: Creating, Editing, and Signing PDFs",
+      "module": "Productivity Tools",
+      "level": "Beginner",
       "tags": [
-        "flexbox",
-        "flex",
-        "layout",
-        "responsive"
-      ],
-      "uploaded": false
+        "PDF",
+        "adobe",
+        "signing",
+        "fill form"
+      ]
     },
     {
       "id": "cs070",
       "day": 70,
-      "title": "CSS Grid Layout",
-      "module": "Web Development",
-      "level": "Intermediate",
+      "title": "File Compression: Zip, Rar & Compression Tools",
+      "module": "Productivity Tools",
+      "level": "Beginner",
       "tags": [
-        "CSS grid",
-        "grid-template",
-        "columns",
-        "rows"
-      ],
-      "uploaded": false
+        "zip",
+        "rar",
+        "compression",
+        "file size"
+      ]
     },
     {
       "id": "cs071",
       "day": 71,
-      "title": "JavaScript Basics",
-      "module": "Web Development",
+      "title": "Typing Speed: Improving WPM & Touch Typing",
+      "module": "Productivity Tools",
       "level": "Beginner",
       "tags": [
-        "JavaScript",
-        "JS",
-        "variables",
-        "DOM"
-      ],
-      "uploaded": false
+        "typing",
+        "WPM",
+        "keyboard",
+        "practice"
+      ]
     },
     {
       "id": "cs072",
       "day": 72,
-      "title": "DOM Manipulation with JavaScript",
-      "module": "Web Development",
-      "level": "Intermediate",
+      "title": "Note-taking Tools: Notion, OneNote & Google Keep",
+      "module": "Productivity Tools",
+      "level": "Beginner",
       "tags": [
-        "DOM",
-        "querySelector",
-        "innerHTML",
-        "events"
-      ],
-      "uploaded": false
+        "notes",
+        "notion",
+        "onenote",
+        "keep"
+      ]
     },
     {
       "id": "cs073",
       "day": 73,
-      "title": "JavaScript Events and Listeners",
-      "module": "Web Development",
-      "level": "Intermediate",
+      "title": "Task Management: Trello, Todoist & Organizers",
+      "module": "Productivity Tools",
+      "level": "Beginner",
       "tags": [
-        "events",
-        "addEventListener",
-        "click",
-        "forms"
-      ],
-      "uploaded": false
+        "tasks",
+        "trello",
+        "todoist",
+        "kanban"
+      ]
     },
     {
       "id": "cs074",
       "day": 74,
-      "title": "Fetch API and Promises",
-      "module": "Web Development",
+      "title": "Optical Character Recognition (OCR): Text from Images",
+      "module": "Productivity Tools",
       "level": "Intermediate",
       "tags": [
-        "fetch",
-        "async",
-        "promises",
-        "API calls"
-      ],
-      "uploaded": false
+        "OCR",
+        "scanner",
+        "text extraction"
+      ]
     },
     {
       "id": "cs075",
       "day": 75,
-      "title": "Async and Await in JavaScript",
-      "module": "Web Development",
-      "level": "Intermediate",
+      "title": "Keyboard Shortcuts for Office Applications",
+      "module": "Productivity Tools",
+      "level": "Beginner",
       "tags": [
-        "async await",
-        "asynchronous",
-        "error handling",
-        "JS"
-      ],
-      "uploaded": false
+        "office shortcuts",
+        "word shortcuts",
+        "excel shortcuts"
+      ]
     },
     {
       "id": "cs076",
       "day": 76,
-      "title": "Introduction to React",
-      "module": "Web Development",
-      "level": "Intermediate",
+      "title": "Graphic Design Basics with Canva",
+      "module": "Creative Tools",
+      "level": "Beginner",
       "tags": [
-        "React",
-        "component",
-        "JSX",
-        "frontend"
-      ],
-      "uploaded": false
+        "design",
+        "canva",
+        "social media",
+        "templates"
+      ]
     },
     {
       "id": "cs077",
       "day": 77,
-      "title": "React State and Props",
-      "module": "Web Development",
-      "level": "Intermediate",
+      "title": "Image Formats Explained (JPEG, PNG, SVG, WebP)",
+      "module": "Creative Tools",
+      "level": "Beginner",
       "tags": [
-        "useState",
-        "props",
-        "state management",
-        "React"
-      ],
-      "uploaded": false
+        "images",
+        "jpeg",
+        "png",
+        "svg",
+        "webp"
+      ]
     },
     {
       "id": "cs078",
       "day": 78,
-      "title": "Node.js Introduction",
-      "module": "Web Development",
-      "level": "Intermediate",
+      "title": "Basic Photo Editing: Cropping, Color, Filters",
+      "module": "Creative Tools",
+      "level": "Beginner",
       "tags": [
-        "Node.js",
-        "server side",
-        "npm",
-        "runtime"
-      ],
-      "uploaded": false
+        "photo editing",
+        "cropping",
+        "filters",
+        "gimp",
+        "photoshop"
+      ]
     },
     {
       "id": "cs079",
       "day": 79,
-      "title": "REST APIs with Express.js",
-      "module": "Web Development",
-      "level": "Intermediate",
+      "title": "Audio Formats & Basic Audio Recording",
+      "module": "Creative Tools",
+      "level": "Beginner",
       "tags": [
-        "REST API",
-        "Express",
-        "routes",
-        "HTTP methods"
-      ],
-      "uploaded": false
+        "audio",
+        "mp3",
+        "wav",
+        "recording",
+        "audacity"
+      ]
     },
     {
       "id": "cs080",
       "day": 80,
-      "title": "REST API Design Best Practices",
-      "module": "Web Development",
+      "title": "Video Formats (MP4, MKV, AVI) & Codecs",
+      "module": "Creative Tools",
       "level": "Intermediate",
       "tags": [
-        "API design",
-        "status codes",
-        "versioning",
-        "JSON"
-      ],
-      "uploaded": false
+        "video formats",
+        "mp4",
+        "codecs",
+        "h264"
+      ]
     },
     {
       "id": "cs081",
       "day": 81,
-      "title": "Introduction to Databases",
-      "module": "Databases",
-      "level": "Beginner",
+      "title": "Editing Videos: Trimming, Splicing, Adding Audio",
+      "module": "Creative Tools",
+      "level": "Intermediate",
       "tags": [
-        "databases",
-        "SQL",
-        "NoSQL",
-        "RDBMS"
-      ],
-      "uploaded": false
+        "video editing",
+        "trimming",
+        "splicing",
+        "capcut"
+      ]
     },
     {
       "id": "cs082",
       "day": 82,
-      "title": "SQL Basics — SELECT Queries",
-      "module": "Databases",
+      "title": "Screen Recording Tools for Windows & Mac",
+      "module": "Creative Tools",
       "level": "Beginner",
       "tags": [
-        "SQL",
-        "SELECT",
-        "WHERE",
-        "FROM",
-        "queries"
-      ],
-      "uploaded": false
+        "screen recording",
+        "OBS",
+        "loom",
+        "capture"
+      ]
     },
     {
       "id": "cs083",
       "day": 83,
-      "title": "SQL Joins Explained",
-      "module": "Databases",
-      "level": "Intermediate",
+      "title": "File Conversion: Images, Videos & Audio formats",
+      "module": "Creative Tools",
+      "level": "Beginner",
       "tags": [
-        "SQL joins",
-        "INNER JOIN",
-        "LEFT JOIN",
-        "tables"
-      ],
-      "uploaded": false
+        "file conversion",
+        "format converter",
+        "handbrake"
+      ]
     },
     {
       "id": "cs084",
       "day": 84,
-      "title": "SQL Aggregations and GROUP BY",
-      "module": "Databases",
+      "title": "Vector vs Raster Images: What is the difference?",
+      "module": "Creative Tools",
       "level": "Intermediate",
       "tags": [
-        "COUNT",
-        "SUM",
-        "AVG",
-        "GROUP BY",
-        "HAVING"
-      ],
-      "uploaded": false
+        "vector",
+        "raster",
+        "pixels",
+        "illustrator"
+      ]
     },
     {
       "id": "cs085",
       "day": 85,
-      "title": "Database Design and Normalization",
-      "module": "Databases",
+      "title": "Digital Design Best Practices: Color & Typography",
+      "module": "Creative Tools",
       "level": "Intermediate",
       "tags": [
-        "normalization",
-        "1NF",
-        "2NF",
-        "3NF",
-        "schema design"
-      ],
-      "uploaded": false
+        "design theory",
+        "fonts",
+        "color palette"
+      ]
     },
     {
       "id": "cs086",
       "day": 86,
-      "title": "Database Indexing",
-      "module": "Databases",
-      "level": "Intermediate",
+      "title": "Generative AI Tools: Introduction to ChatGPT & Gemini",
+      "module": "Modern Tech & AI",
+      "level": "Beginner",
       "tags": [
-        "indexes",
-        "B-tree",
-        "query performance",
-        "slow queries"
-      ],
-      "uploaded": false
+        "AI",
+        "chatgpt",
+        "gemini",
+        "generative AI"
+      ]
     },
     {
       "id": "cs087",
       "day": 87,
-      "title": "Transactions and ACID Properties",
-      "module": "Databases",
+      "title": "Prompt Engineering: How to get the best out of AI",
+      "module": "Modern Tech & AI",
       "level": "Intermediate",
       "tags": [
-        "transactions",
-        "ACID",
-        "commit",
-        "rollback",
-        "isolation"
-      ],
-      "uploaded": false
+        "prompts",
+        "prompt engineering",
+        "ai instructions"
+      ]
     },
     {
       "id": "cs088",
       "day": 88,
-      "title": "NoSQL Databases Introduction",
-      "module": "Databases",
+      "title": "AI Image Generators: Midjourney & Stable Diffusion basics",
+      "module": "Modern Tech & AI",
       "level": "Intermediate",
       "tags": [
-        "NoSQL",
-        "document store",
-        "key-value",
-        "CAP theorem"
-      ],
-      "uploaded": false
+        "ai art",
+        "midjourney",
+        "stable diffusion"
+      ]
     },
     {
       "id": "cs089",
       "day": 89,
-      "title": "MongoDB Basics",
-      "module": "Databases",
-      "level": "Intermediate",
+      "title": "AI Translation & Writing Assistants",
+      "module": "Modern Tech & AI",
+      "level": "Beginner",
       "tags": [
-        "MongoDB",
-        "documents",
-        "collections",
-        "BSON"
-      ],
-      "uploaded": false
+        "ai writing",
+        "translation",
+        "grammarly",
+        "deepl"
+      ]
     },
     {
       "id": "cs090",
       "day": 90,
-      "title": "Database Performance Optimization",
-      "module": "Databases",
-      "level": "Advanced",
+      "title": "Smart Home Devices & Internet of Things (IoT)",
+      "module": "Modern Tech & AI",
+      "level": "Beginner",
       "tags": [
-        "optimization",
-        "query plan",
-        "caching",
-        "sharding"
-      ],
-      "uploaded": false
+        "smart home",
+        "IoT",
+        "alexa",
+        "google home"
+      ]
     },
     {
       "id": "cs091",
       "day": 91,
-      "title": "Git Version Control Basics",
-      "module": "Advanced Topics",
-      "level": "Beginner",
+      "title": "How Cellular Networks (4G/5G) and SIM Cards Work",
+      "module": "Modern Tech & AI",
+      "level": "Intermediate",
       "tags": [
-        "git",
-        "version control",
-        "commit",
-        "branch"
-      ],
-      "uploaded": false
+        "cellular",
+        "5G",
+        "sim card",
+        "mobile network"
+      ]
     },
     {
       "id": "cs092",
       "day": 92,
-      "title": "Git Branching and Merging",
-      "module": "Advanced Topics",
+      "title": "How GPS & Location Services Work",
+      "module": "Modern Tech & AI",
       "level": "Intermediate",
       "tags": [
-        "git branch",
-        "merge",
-        "rebase",
-        "pull request"
-      ],
-      "uploaded": false
+        "GPS",
+        "location services",
+        "satellites",
+        "maps"
+      ]
     },
     {
       "id": "cs093",
       "day": 93,
-      "title": "Command Line and Bash Basics",
-      "module": "Advanced Topics",
-      "level": "Beginner",
+      "title": "Blockchain & Cryptocurrencies (Bitcoin, Ethereum)",
+      "module": "Modern Tech & AI",
+      "level": "Advanced",
       "tags": [
-        "terminal",
-        "bash",
-        "CLI",
-        "linux commands"
-      ],
-      "uploaded": false
+        "blockchain",
+        "bitcoin",
+        "crypto",
+        "decentralized"
+      ]
     },
     {
       "id": "cs094",
       "day": 94,
-      "title": "Docker Introduction",
-      "module": "Advanced Topics",
-      "level": "Intermediate",
+      "title": "QR Codes: How They Work & Scanning Safety",
+      "module": "Modern Tech & AI",
+      "level": "Beginner",
       "tags": [
-        "docker",
-        "containers",
-        "images",
-        "Dockerfile"
-      ],
-      "uploaded": false
+        "QR code",
+        "scanning",
+        "qr security"
+      ]
     },
     {
       "id": "cs095",
       "day": 95,
-      "title": "Cloud Computing Fundamentals",
-      "module": "Advanced Topics",
-      "level": "Intermediate",
+      "title": "NFC (Near Field Communication) & Wireless Payments",
+      "module": "Modern Tech & AI",
+      "level": "Beginner",
       "tags": [
-        "cloud",
-        "AWS",
-        "GCP",
-        "Azure",
-        "IaaS PaaS SaaS"
-      ],
-      "uploaded": false
+        "NFC",
+        "contactless payment",
+        "apple pay",
+        "google wallet"
+      ]
     },
     {
       "id": "cs096",
       "day": 96,
-      "title": "System Design Basics",
-      "module": "Advanced Topics",
-      "level": "Advanced",
+      "title": "Virtual Reality (VR) and Augmented Reality (AR)",
+      "module": "Modern Tech & AI",
+      "level": "Intermediate",
       "tags": [
-        "system design",
-        "scalability",
-        "load balancer",
-        "microservices"
-      ],
-      "uploaded": false
+        "VR",
+        "AR",
+        "headset",
+        "metaverse"
+      ]
     },
     {
       "id": "cs097",
       "day": 97,
-      "title": "Computer Security Fundamentals",
-      "module": "Advanced Topics",
-      "level": "Intermediate",
+      "title": "Cloud Gaming & Streaming Platforms (Netflix, YouTube)",
+      "module": "Modern Tech & AI",
+      "level": "Beginner",
       "tags": [
-        "security",
-        "hashing",
-        "encryption",
-        "vulnerabilities"
-      ],
-      "uploaded": false
+        "streaming",
+        "cloud gaming",
+        "bandwidth",
+        "codec"
+      ]
     },
     {
       "id": "cs098",
       "day": 98,
-      "title": "Cryptography Explained",
-      "module": "Advanced Topics",
-      "level": "Advanced",
+      "title": "How Touch Screens and Sensors Work",
+      "module": "Modern Tech & AI",
+      "level": "Intermediate",
       "tags": [
-        "cryptography",
-        "RSA",
-        "AES",
-        "public key",
-        "HTTPS"
-      ],
-      "uploaded": false
+        "touch screen",
+        "capacitive",
+        "sensors",
+        "accelerometer"
+      ]
     },
     {
       "id": "cs099",
       "day": 99,
-      "title": "Introduction to Machine Learning",
-      "module": "Advanced Topics",
+      "title": "Understanding Big Data and Data Centers",
+      "module": "Modern Tech & AI",
       "level": "Advanced",
       "tags": [
-        "machine learning",
-        "ML",
-        "training",
-        "model",
-        "supervised"
-      ],
-      "uploaded": false
+        "big data",
+        "data center",
+        "servers",
+        "infrastructure"
+      ]
     },
     {
       "id": "cs100",
       "day": 100,
-      "title": "Artificial Intelligence and the Future",
-      "module": "Advanced Topics",
+      "title": "Future of Computing: Quantum Computing & Beyond",
+      "module": "Modern Tech & AI",
       "level": "Advanced",
       "tags": [
-        "AI",
-        "LLMs",
-        "neural networks",
-        "future of tech"
-      ],
-      "uploaded": false
+        "future tech",
+        "quantum computing",
+        "qubits"
+      ]
     }
   ]
 }

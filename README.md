@@ -11,7 +11,7 @@ Uploads a **daily 5-minute animated educational video** to YouTube — fully aut
 ```
 GitHub Actions (daily cron)
   → Pick next topic from curriculum.json
-  → Claude API generates script + slide content
+  → Gemini API generates script + slide content
   → edge-tts generates narration audio (free neural voice)
   → Pillow renders styled animation slides
   → MoviePy assembles video + audio
@@ -27,7 +27,7 @@ GitHub Actions (daily cron)
 | Tool | Purpose | Cost |
 |------|---------|------|
 | GitHub Actions | Daily scheduler | Free (public repos) |
-| Anthropic Claude API | Script generation | Free tier / ~$0.01/video |
+| Google Gemini API | Script generation | Free tier |
 | edge-tts | Neural TTS narration | Free |
 | Pillow + MoviePy | Video rendering | Free |
 | YouTube Data API v3 | Upload | Free (10k units/day) |
@@ -44,13 +44,13 @@ cd YOUR_REPO
 bash setup.sh
 ```
 
-### Step 2 — Get your Anthropic API key
+### Step 2 — Get your Gemini API key
 
-1. Go to [console.anthropic.com](https://console.anthropic.com)
+1. Go to [Google AI Studio](https://aistudio.google.com/)
 2. Create an API key
 3. Add it to `.env`:
    ```
-   ANTHROPIC_API_KEY=sk-ant-...
+   GEMINI_API_KEY=AIzaSy...
    ```
 
 ### Step 3 — Set up YouTube API
@@ -76,7 +76,7 @@ In your GitHub repo: **Settings → Secrets and variables → Actions → New re
 
 | Secret name | Value |
 |-------------|-------|
-| `ANTHROPIC_API_KEY` | Your Anthropic key |
+| `GEMINI_API_KEY` | Your Gemini key |
 | `YOUTUBE_CLIENT_ID` | From auth_setup.py output |
 | `YOUTUBE_CLIENT_SECRET` | From auth_setup.py output |
 | `YOUTUBE_REFRESH_TOKEN` | From auth_setup.py output |
@@ -119,7 +119,7 @@ youtube_automation/
 ├── setup.sh                 # Local installation script
 ├── requirements.txt
 ├── modules/
-│   ├── script_generator.py  # Claude API → structured script
+│   ├── script_generator.py  # Gemini API → structured script
 │   ├── animator.py          # Pillow slide renderer
 │   ├── tts_narrator.py      # edge-tts narration
 │   ├── video_assembler.py   # MoviePy video + audio merge
@@ -182,8 +182,8 @@ Edit `curriculum.json` — add entries to the `topics` array:
 
 ## Troubleshooting
 
-**`ANTHROPIC_API_KEY` not working**
-→ Check console.anthropic.com for quota and billing.
+**`GEMINI_API_KEY` not working**
+→ Check aistudio.google.com for your API key status.
 
 **YouTube upload fails with 403**
 → Your refresh token may have expired. Re-run `python auth_setup.py` and update the GitHub Secret.

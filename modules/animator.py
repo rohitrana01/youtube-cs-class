@@ -5,7 +5,10 @@ Uses Pillow for frame rendering and MoviePy for video assembly.
 No heavy 3D renderer needed — clean dark-theme slide animations.
 """
 import os
+import io
 import math
+import requests
+import urllib.parse
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 from moviepy.editor import ImageClip, concatenate_videoclips
@@ -23,7 +26,31 @@ W, H     = 1920, 1080
 
 # ── Font loader ──────────────────────────────────────────────────────────────
 def _load_fonts():
-    """Try DejaVu (always on Ubuntu/GitHub Actions), fall back to default."""
+    """Load Poppins fonts if available, else fallback to system fonts."""
+    fonts_dir = "fonts"
+    def try_load_file(filename, size):
+        path = os.path.join(fonts_dir, filename)
+        if os.path.exists(path):
+            try:
+                return ImageFont.truetype(path, size)
+            except Exception:
+                pass
+        return None
+
+    poppins_reg = try_load_file("Poppins-Regular.ttf", 34)
+    if poppins_reg:
+        return {
+            "title":   ImageFont.truetype(os.path.join(fonts_dir, "Poppins-Bold.ttf"), 68),
+            "heading": ImageFont.truetype(os.path.join(fonts_dir, "Poppins-Bold.ttf"), 50),
+            "body":    ImageFont.truetype(os.path.join(fonts_dir, "Poppins-Regular.ttf"), 34),
+            "body_b":  ImageFont.truetype(os.path.join(fonts_dir, "Poppins-SemiBold.ttf"), 34),
+            "code":    ImageFont.truetype(os.path.join(fonts_dir, "Poppins-Regular.ttf"), 28),
+            "code_b":  ImageFont.truetype(os.path.join(fonts_dir, "Poppins-SemiBold.ttf"), 28),
+            "small":   ImageFont.truetype(os.path.join(fonts_dir, "Poppins-Regular.ttf"), 22),
+            "badge":   ImageFont.truetype(os.path.join(fonts_dir, "Poppins-Bold.ttf"), 20),
+        }
+
+    # Fallback to system fonts
     paths = [
         "/usr/share/fonts/truetype/dejavu/",
         "/usr/share/fonts/truetype/liberation/",
@@ -69,13 +96,34 @@ def _fonts():
     return FONTS
 
 
+WATERMARK_IMG = None
+
+def _load_watermark():
+    global WATERMARK_IMG
+    if WATERMARK_IMG is None:
+        if os.path.exists("watermark.png"):
+            WATERMARK_IMG = Image.open("watermark.png").convert("RGBA")
+            aspect = WATERMARK_IMG.width / WATERMARK_IMG.height
+            WATERMARK_IMG = WATERMARK_IMG.resize((int(80 * aspect), 80), Image.Resampling.LANCZOS)
+            # Add transparency (opacity 0.7)
+            alpha = WATERMARK_IMG.getchannel('A')
+            WATERMARK_IMG.putalpha(alpha.point(lambda i: int(i * 0.7)))
+        else:
+            WATERMARK_IMG = False
+    return WATERMARK_IMG
+
 # ── Drawing helpers ───────────────────────────────────────────────────────────
-def _base(draw):
+def _base(draw, img=None):
     """Draw gradient background + top accent bar."""
     for y in range(H):
         shade = int(y / H * 8)
         draw.line([(0, y), (W, y)], fill=(BG[0]+shade, BG[1]+shade+3, BG[2]+shade+5))
     draw.rectangle([0, 0, W, 7], fill=ACCENT)
+    
+    if img:
+        wm = _load_watermark()
+        if wm:
+            img.paste(wm, (W - wm.width - 40, 40), wm)
 
 
 def _progress(draw, pct):
@@ -135,7 +183,7 @@ def _code_block(draw, code, x, y, max_h):
 def _title_slide(topic, pct):
     img = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(img)
-    _base(d)
+    _base(d, img)
     f = _fonts()
 
     # Day badge
@@ -162,16 +210,19 @@ def _title_slide(topic, pct):
     return np.array(img)
 
 
-def _content_slide(seg_title, all_points, show_n, code, pct):
+def _content_slide(seg_title, all_points, show_n, code, pct, ref_img=None):
     img = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(img)
-    _base(d)
+    _base(d, img)
     f = _fonts()
 
     # Section heading
     d.text((80, 40), seg_title, font=f["heading"], fill=(255, 255, 255))
     tw = d.textbbox((0, 0), seg_title, font=f["heading"])[2]
     d.rectangle([80, 104, 80 + tw, 109], fill=ACCENT)
+
+    # If there's an image, text takes up 900px, otherwise W - 200
+    text_max_w = 800 if ref_img else W - 200
 
     # Bullet points
     y = 150
@@ -183,12 +234,19 @@ def _content_slide(seg_title, all_points, show_n, code, pct):
         # Bullet dot
         d.ellipse([80, y + 10, 100, y + 30], fill=b_col)
         y = _wrap(d, point, 120, y, f["body"] if not is_current else f["body_b"],
-                  col, W - 200)
+                  col, text_max_w)
         y += 12
 
     # Code block if it's the last point revealed
     if code and show_n >= len(all_points):
         _code_block(d, code, 80, y + 10, H - 60)
+
+    # Reference image
+    if ref_img and show_n >= len(all_points) // 2:
+        # Paste image on the right side
+        ix = W - ref_img.width - 80
+        iy = (H - ref_img.height) // 2
+        img.paste(ref_img, (ix, iy), ref_img)
 
     _progress(d, pct)
     return np.array(img)
@@ -197,7 +255,7 @@ def _content_slide(seg_title, all_points, show_n, code, pct):
 def _summary_slide(title, points, pct):
     img = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(img)
-    _base(d)
+    _base(d, img)
     f = _fonts()
 
     d.text((80, 40), "📋  Key Takeaways", font=f["heading"], fill=(255, 255, 255))
@@ -218,7 +276,7 @@ def _summary_slide(title, points, pct):
 def _outro_slide(next_topic, pct):
     img = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(img)
-    _base(d)
+    _base(d, img)
     f = _fonts()
 
     cy = H // 2 - 90
@@ -235,6 +293,109 @@ def _outro_slide(next_topic, pct):
     return np.array(img)
 
 
+def _quiz_slide(quiz_data, show_answer, timer_pct, pct):
+    img = Image.new("RGB", (W, H), BG)
+    d = ImageDraw.Draw(img)
+    _base(d, img)
+    f = _fonts()
+
+    # Section heading
+    d.text((80, 40), "❓ Pop Quiz (क्विज़)", font=f["heading"], fill=(255, 255, 255))
+    d.rectangle([80, 104, 80 + 350, 109], fill=ACCENT)
+
+    # Draw Question
+    y = 150
+    y = _wrap(d, quiz_data["question"], 80, y, f["title"] if len(quiz_data["question"]) < 60 else f["heading"], (255, 255, 255), W - 160)
+    y += 40
+
+    # Draw Options (2x2 grid)
+    opt_w, opt_h = 800, 120
+    correct_opt = quiz_data.get("correct_answer", "").strip().upper() # "A", "B", "C", "D"
+
+    for idx, opt in enumerate(quiz_data["options"]):
+        # Determine grid position
+        row = idx // 2
+        col = idx % 2
+        ox = 80 if col == 0 else (W // 2 + 20)
+        oy = y + row * (opt_h + 30)
+
+        # Get option letter
+        opt_letter = opt.strip()[0].upper() # "A", "B", "C", "D"
+        
+        bg_color = CODE_BG
+        border_color = MUTED
+        text_color = TEXT
+
+        if show_answer:
+            if opt_letter == correct_opt:
+                bg_color = (22, 101, 52) # Dark green
+                border_color = GREEN
+                text_color = (255, 255, 255)
+            else:
+                bg_color = (20, 25, 45) # Faded
+                border_color = (40, 50, 75)
+                text_color = MUTED
+
+        d.rounded_rectangle([ox, oy, ox + opt_w, oy + opt_h], radius=12, fill=bg_color, outline=border_color, width=2)
+        d.text((ox + 30, oy + (opt_h - f["body"].size) // 2), opt, font=f["body_b"] if (show_answer and opt_letter == correct_opt) else f["body"], fill=text_color)
+
+    # Timer or Explanation section at the bottom
+    bottom_y = H - 240
+    if not show_answer:
+        # Draw Countdown Timer Bar
+        timer_w = W - 160
+        timer_h = 16
+        # Draw outline
+        d.rounded_rectangle([80, bottom_y, 80 + timer_w, bottom_y + timer_h], radius=8, fill=(30, 41, 59))
+        # Draw fill (shrinks based on timer_pct)
+        fill_w = int(timer_w * timer_pct)
+        if fill_w > 0:
+            d.rounded_rectangle([80, bottom_y, 80 + fill_w, bottom_y + timer_h], radius=8, fill=ACCENT)
+        
+        # Display instructions in English or Hindi
+        from config import LANGUAGE
+        hint_text = "Choose your answer in the comments! (कमेंट्स में अपना जवाब दें!)" if LANGUAGE == "hi" else f"Choose your answer in the comments! (Remaining: {int(5 * timer_pct) + 1}s)"
+        d.text((80, bottom_y - 40), hint_text, font=f["small"], fill=MUTED)
+    else:
+        # Draw Explanation
+        d.rounded_rectangle([80, bottom_y, W - 80, bottom_y + 130], radius=12, fill=(30, 41, 59), outline=GREEN, width=1)
+        d.text((100, bottom_y + 15), "Explanation (स्पष्टीकरण):", font=f["badge"], fill=GREEN)
+        _wrap(d, quiz_data["explanation"], 100, bottom_y + 45, f["small"], TEXT, W - 200)
+
+    _progress(d, pct)
+    return np.array(img)
+
+
+def _get_ai_image(prompt, out_dir, seg_idx):
+    if not prompt:
+        return None
+    path = os.path.join(out_dir, f"img_{seg_idx}.png")
+    if os.path.exists(path):
+        return Image.open(path)
+    print(f"  [animator] Fetching AI image for segment {seg_idx}...")
+    safe_prompt = urllib.parse.quote(prompt)
+    url = f"https://image.pollinations.ai/prompt/{safe_prompt}?width=800&height=600&nologo=true"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
+    try:
+        resp = requests.get(url, headers=headers, timeout=15)
+        resp.raise_for_status()
+        img = Image.open(io.BytesIO(resp.content)).convert("RGBA")
+        
+        # Round corners
+        mask = Image.new("L", img.size, 0)
+        draw = ImageDraw.Draw(mask)
+        draw.rounded_rectangle([0, 0, img.size[0], img.size[1]], radius=20, fill=255)
+        img.putalpha(mask)
+        
+        img.save(path)
+        return img
+    except Exception as e:
+        print(f"  [animator] Failed to fetch image: {e}")
+        return None
+
+
 # ── Main entry point ──────────────────────────────────────────────────────────
 def create_animation(script_data: dict, topic: dict,
                      audio_duration: float, output_path: str) -> str:
@@ -247,11 +408,14 @@ def create_animation(script_data: dict, topic: dict,
     segments   = script_data.get("segments", [])
     summary    = script_data.get("summary_points", [])
     next_topic = script_data.get("next_topic", "")
+    quiz       = script_data.get("quiz", {})
 
     INTRO_DUR  = 10
     OUTRO_DUR  = 12
     SUMM_DUR   = 12
-    content_dur = max(audio_duration - INTRO_DUR - OUTRO_DUR - SUMM_DUR, 60)
+    QUIZ_DUR   = 10  # 5s countdown + 5s answer reveal
+    
+    content_dur = max(audio_duration - INTRO_DUR - OUTRO_DUR - SUMM_DUR - QUIZ_DUR, 60)
 
     # Distribute time across segments proportionally
     raw_totals = [s.get("duration_seconds", 40) for s in segments]
@@ -267,18 +431,37 @@ def create_animation(script_data: dict, topic: dict,
     elapsed += INTRO_DUR
 
     # ── Content ──
-    for seg, raw_dur in zip(segments, raw_totals):
+    for seg_idx, (seg, raw_dur) in enumerate(zip(segments, raw_totals)):
         seg_dur = raw_dur * scale
         points  = seg.get("points", [])
         code    = seg.get("code")
+        prompt  = seg.get("image_prompt")
         n       = max(len(points), 1)
         pt_dur  = seg_dur / n
+        
+        ref_img = _get_ai_image(prompt, os.path.dirname(output_path), seg_idx)
 
         for i in range(1, n + 1):
             pct   = elapsed / audio_duration
-            frame = _content_slide(seg.get("title", ""), points, i, code, pct)
+            frame = _content_slide(seg.get("title", ""), points, i, code, pct, ref_img)
             clips.append(ImageClip(frame, duration=pt_dur))
             elapsed += pt_dur
+
+    # ── Interactive Pop Quiz ──
+    if quiz:
+        # 5 seconds countdown: render 5 distinct frames (one for each second) to animate timer bar
+        for i in range(5):
+            timer_pct = (5 - i) / 5
+            pct = elapsed / audio_duration
+            frame = _quiz_slide(quiz, show_answer=False, timer_pct=timer_pct, pct=pct)
+            clips.append(ImageClip(frame, duration=1.0))
+            elapsed += 1.0
+            
+        # 5 seconds answer reveal: show the correct answer and the explanation
+        pct = elapsed / audio_duration
+        frame = _quiz_slide(quiz, show_answer=True, timer_pct=0.0, pct=pct)
+        clips.append(ImageClip(frame, duration=5.0))
+        elapsed += 5.0
 
     # ── Summary ──
     frame = _summary_slide(topic["title"], summary, elapsed / audio_duration)
@@ -298,6 +481,6 @@ def create_animation(script_data: dict, topic: dict,
         audio=False,
         threads=4,
         logger=None,
-        ffmpeg_params=["-crf", "23", "-preset", "fast"]
+        ffmpeg_params=["-crf", "23", "-preset", "fast", "-pix_fmt", "yuv420p"]
     )
     return output_path

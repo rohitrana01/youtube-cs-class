@@ -6,14 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# LLM Provider Configuration
-LLM_PROVIDER = os.getenv("LLM_PROVIDER", "gemini")  # "claude" or "gemini"
-
-# Anthropic
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
-ANTHROPIC_MODEL   = os.getenv("ANTHROPIC_MODEL", "claude-3-5-sonnet-latest")
-
-# Gemini (Free Tier Alternative)
+# Gemini Configuration
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GEMINI_MODEL   = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
@@ -24,8 +17,14 @@ YOUTUBE_REFRESH_TOKEN = os.getenv("YOUTUBE_REFRESH_TOKEN", "")
 
 # Channel settings
 CHANNEL_NAME  = os.getenv("CHANNEL_NAME", "LearnCS Daily")
-TTS_VOICE     = os.getenv("TTS_VOICE", "en-US-AriaNeural")
 VIDEO_PRIVACY = os.getenv("VIDEO_PRIVACY", "public")
+
+# Language and Voice settings
+LANGUAGE      = os.getenv("LANGUAGE", "en").lower()
+if LANGUAGE == "hi":
+    TTS_VOICE = os.getenv("TTS_VOICE", "hi-IN-MadhurNeural")
+else:
+    TTS_VOICE = os.getenv("TTS_VOICE", "en-US-AriaNeural")
 
 # Paths
 OUTPUT_DIR       = "output"
