@@ -399,41 +399,38 @@ def _get_ai_image(prompt, out_dir, seg_idx):
 
 # ── Main entry point ──────────────────────────────────────────────────────────
 def create_animation(script_data: dict, topic: dict,
-                     audio_duration: float, output_path: str) -> str:
+                     durations: dict, output_path: str) -> str:
     """
-    Build a silent MP4 timed to audio_duration.
+    Build a silent MP4 timed to matches individual section audio durations perfectly.
     Returns the path to the rendered video file.
     """
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
 
     segments   = script_data.get("segments", [])
-    summary    = script_data.get("summary_points", [])
-    next_topic = script_data.get("next_topic", "")
+    summary    = script_data.get("summary", {}).get("points", []) or script_data.get("summary_points", [])
+    next_topic = script_data.get("outro", {}).get("next_topic", "") or script_data.get("next_topic", "")
     quiz       = script_data.get("quiz", {})
 
-    INTRO_DUR  = 10
-    OUTRO_DUR  = 12
-    SUMM_DUR   = 12
-    QUIZ_DUR   = 10  # 5s countdown + 5s answer reveal
-    
-    content_dur = max(audio_duration - INTRO_DUR - OUTRO_DUR - SUMM_DUR - QUIZ_DUR, 60)
-
-    # Distribute time across segments proportionally
-    raw_totals = [s.get("duration_seconds", 40) for s in segments]
-    total_raw  = sum(raw_totals) or len(segments) * 40
-    scale      = content_dur / total_raw
+    total_duration = (
+        durations["intro"] +
+        sum(durations["segments"]) +
+        durations["quiz"] +
+        durations["summary"] +
+        durations["outro"]
+    )
 
     clips = []
     elapsed = 0.0
 
     # ── Intro ──
-    frame = _title_slide(topic, elapsed / audio_duration)
-    clips.append(ImageClip(frame, duration=INTRO_DUR))
-    elapsed += INTRO_DUR
+    intro_dur = durations["intro"]
+    frame = _title_slide(topic, elapsed / total_duration)
+    clips.append(ImageClip(frame, duration=intro_dur))
+    elapsed += intro_dur
 
     # ── Content ──
-    for seg_idx, (seg, raw_dur) in enumerate(zip(segments, raw_totals)):
-        seg_dur = raw_dur * scale
+    for seg_idx, seg in enumerate(segments):
+        seg_dur = durations["segments"][seg_idx] if seg_idx < len(durations["segments"]) else 40.0
         points  = seg.get("points", [])
         code    = seg.get("code")
         prompt  = seg.get("image_prompt")
@@ -443,35 +440,43 @@ def create_animation(script_data: dict, topic: dict,
         ref_img = _get_ai_image(prompt, os.path.dirname(output_path), seg_idx)
 
         for i in range(1, n + 1):
-            pct   = elapsed / audio_duration
+            pct   = elapsed / total_duration
             frame = _content_slide(seg.get("title", ""), points, i, code, pct, ref_img)
             clips.append(ImageClip(frame, duration=pt_dur))
             elapsed += pt_dur
 
     # ── Interactive Pop Quiz ──
     if quiz:
-        # 5 seconds countdown: render 5 distinct frames (one for each second) to animate timer bar
-        for i in range(5):
-            timer_pct = (5 - i) / 5
-            pct = elapsed / audio_duration
+        quiz_dur = durations["quiz"]
+        countdown_dur = 5.0 if quiz_dur >= 10.0 else quiz_dur * 0.5
+        reveal_dur = (quiz_dur - countdown_dur) if quiz_dur >= 10.0 else quiz_dur * 0.5
+        
+        # Countdown: render 5 distinct frames to animate timer bar
+        steps = 5
+        step_dur = countdown_dur / steps
+        for i in range(steps):
+            timer_pct = (steps - i) / steps
+            pct = elapsed / total_duration
             frame = _quiz_slide(quiz, show_answer=False, timer_pct=timer_pct, pct=pct)
-            clips.append(ImageClip(frame, duration=1.0))
-            elapsed += 1.0
+            clips.append(ImageClip(frame, duration=step_dur))
+            elapsed += step_dur
             
-        # 5 seconds answer reveal: show the correct answer and the explanation
-        pct = elapsed / audio_duration
+        # Answer reveal: show the correct answer and the explanation
+        pct = elapsed / total_duration
         frame = _quiz_slide(quiz, show_answer=True, timer_pct=0.0, pct=pct)
-        clips.append(ImageClip(frame, duration=5.0))
-        elapsed += 5.0
+        clips.append(ImageClip(frame, duration=reveal_dur))
+        elapsed += reveal_dur
 
     # ── Summary ──
-    frame = _summary_slide(topic["title"], summary, elapsed / audio_duration)
-    clips.append(ImageClip(frame, duration=SUMM_DUR))
-    elapsed += SUMM_DUR
+    summary_dur = durations["summary"]
+    frame = _summary_slide(topic["title"], summary, elapsed / total_duration)
+    clips.append(ImageClip(frame, duration=summary_dur))
+    elapsed += summary_dur
 
     # ── Outro ──
+    outro_dur = durations["outro"]
     frame = _outro_slide(next_topic, 1.0)
-    clips.append(ImageClip(frame, duration=OUTRO_DUR))
+    clips.append(ImageClip(frame, duration=outro_dur))
 
     # Concatenate and write
     video = concatenate_videoclips(clips, method="compose")

@@ -51,9 +51,9 @@ def generate_script(topic: dict) -> dict:
         lang_instruction = """
 IMPORTANT LANGUAGE RULES FOR HINDI (hi):
 1. video_title & video_description: Write in clean, highly appealing Hindi (using Devanagari script). Keep technical terms as they are, but in Devanagari.
-2. narration: Must be in natural, conversational spoken Hindi (Devanagari script, e.g., "नमस्ते दोस्तों! आज हम बात करेंगे..."). Explain concepts simply. Write technical names in Devanagari (कंप्यूटर, रैम, सीपीयू).
+2. All narration fields (intro.narration, segments[].narration, quiz.narration, summary.narration, outro.narration): Must be in natural, conversational spoken Hindi (Devanagari script, e.g., "नमस्ते दोस्तों! आज हम बात करेंगे..."). Explain concepts simply. Write technical names in Devanagari (कंप्यूटर, रैम, सीपीयू).
 3. segments[].points (Slide Text): Write in bilingual Hinglish or English with Hindi meaning in brackets (e.g., "CPU: Central Processing Unit (कंप्यूटर का दिमाग)"). Keep it under 80 characters.
-4. quiz & summary_points: Write them in natural Hindi (Devanagari script).
+4. quiz & summary fields (except their narrations): Write them in natural Hindi (Devanagari script).
 5. short: Write the "narration" and "title" in highly viral spoken Hindi (written in Devanagari) to hook normal people instantly. Keep technical terms in Devanagari.
 """
     else:
@@ -77,25 +77,21 @@ The JSON must match this exact structure:
   "video_title": "[Day {topic['day']}: Topic Title | Course Name]",
   "video_description": "[Video description covering the topic, with hashtags, target audience, etc.]",
   "tags": ["computer science", "programming", "tutorial", "education", "{topic['module'].lower()}"],
-  "narration": "[Write a ~700-word highly engaging narration script. Conversational tone. Start with a strong hook/question. Explain everything step-by-step. Introduce the pop quiz before the summary points. Tease the next video at the very end.]",
+  "intro": {{
+    "title": "[Intro Slide Title, e.g. Day {topic['day']}: {topic['title']}]",
+    "narration": "[Write a ~50-word highly engaging introduction speech. Start with a strong hook/question. Conversational tone.]"
+  }},
   "segments": [
     {{
       "title": "[Section heading]",
-      "duration_seconds": 60,
       "points": [
         "[Punchy bullet point 1]",
         "[Punchy bullet point 2]",
         "[Punchy bullet point 3]"
       ],
       "code": null,
-      "image_prompt": "[A highly specific visual metaphor or conceptual diagram explaining this section. Describe the scene in detail. For example, for RAM, describe 'A student's study desk representing RAM, cluttered with open notebooks, with a filing cabinet in the background representing permanent storage'. Do NOT request any text in the image.]"
-    }},
-    {{
-      "title": "[Section heading]",
-      "duration_seconds": 60,
-      "points": ["...", "...", "..."],
-      "code": null,
-      "image_prompt": "[A highly specific visual metaphor or conceptual diagram explaining this section. Describe the scene in detail. Do NOT request any text in the image.]"
+      "image_prompt": "[A highly specific visual metaphor or conceptual diagram explaining this section. Force a realistic style, starting with 'An ultra-realistic photograph of...' or 'A realistic 3D digital render of...'. Avoid cartoonish styles. Describe the scene in detail. Do NOT request any text in the image.]",
+      "narration": "[Write a ~150-word detailed narration explaining the points of this section in a conversational, easy-to-understand way. Do not write too fast or slow. Keep it highly engaging.]"
     }}
   ],
   "quiz": {{
@@ -107,20 +103,27 @@ The JSON must match this exact structure:
       "D) [Option D]"
     ],
     "correct_answer": "[A, B, C, or D]",
-    "explanation": "[A brief 1-sentence explanation of why this option is correct]"
+    "explanation": "[A brief 1-sentence explanation of why this option is correct]",
+    "narration": "[Write a ~60-word narration script that introduces the quiz question, reads the options, tells the viewer to guess, and then reveals and explains the correct answer. Keep it engaging!]"
   }},
-  "summary_points": [
-    "[Key takeaway 1]",
-    "[Key takeaway 2]",
-    "[Key takeaway 3]"
-  ],
-  "next_topic": "[Title of day {topic['day'] + 1} topic]",
+  "summary": {{
+    "points": [
+      "[Key takeaway 1]",
+      "[Key takeaway 2]",
+      "[Key takeaway 3]"
+    ],
+    "narration": "[Write a ~80-word narration summary wrapping up the key points of the lesson.]"
+  }},
+  "outro": {{
+    "next_topic": "[Title of day {topic['day'] + 1} topic]",
+    "narration": "[Write a ~40-word outro thanking the viewer, reminding them to subscribe/like, and teasing the next topic: {topic['day'] + 1}.]"
+  }},
   "short": {{
     "title": "[Viral title under 70 characters with #shorts, e.g., 'This Computer Fact Will Blow Your Mind! 🤯 #shorts']",
     "description": "[A punchy 1-sentence description with viral hashtags, e.g., '#shorts #techfacts #computer']",
     "tags": ["shorts", "techfacts", "viral", "computer"],
     "narration": "[An extremely fast-paced, high-curiosity 40-50 word narration script that fits within 25 seconds. Start instantly with a mind-blowing hook. E.g., 'Wait, did you know that your computer RAM is actually just like a messy student desk?']",
-    "image_prompt": "[A highly visual description of an image for a vertical 1080x1920 layout. Force a distinct style, either 'A vibrant 3D digital cartoon illustration of...' or 'An ultra-realistic close-up photograph of...', whichever style creates the best visual hook for the fact. Do NOT request text.]"
+    "image_prompt": "[A highly visual description of an image for a vertical 1080x1920 layout. Force a realistic style, starting with 'An ultra-realistic close-up photograph of...' or 'A realistic 3D digital render of...'. Avoid cartoonish styles. Do NOT request text.]"
   }}
 }}
 
@@ -128,8 +131,8 @@ Rules:
 - Include 3-5 segments.
 - Keep each slide bullet point simple, punchy, and under 80 characters.
 - Always set the `"code"` field to `null` since this is a non-coding computer course.
-- Ensure the `image_prompt` is a detailed visual description or metaphor representing the concept of that segment, without text in the image.
-- Enforce the YouTube Short to be 20-30 seconds with an immediate curiosity hook and either cartoon or realistic style.
+- Ensure all `image_prompt` fields use a realistic, premium photographic or digital render style (no cartoons).
+- Enforce the YouTube Short to be 20-30 seconds with an immediate curiosity hook and a realistic style.
 - Return ONLY the raw JSON object."""
 
     try:
@@ -171,13 +174,9 @@ def _fallback_script(topic: dict) -> dict:
     if is_hi:
         title = f"Day {topic['day']}: {topic['title']} | कंप्यूटर कोर्स"
         desc = f"आज हम सीखेंगे: {topic['title']}। यह हमारे 100-दिन के कंप्यूटर कोर्स का हिस्सा है।"
-        narration = (
-            f"हेलो दोस्तों, कंप्यूटर कोर्स के डे {topic['day']} में आपका स्वागत है! "
-            f"आज हम {topic['title']} के बारे में बात करेंगे। "
-            f"यह {topic['module']} का एक बहुत ही महत्वपूर्ण हिस्सा है। "
-            "चलिए इसे बिल्कुल आसान भाषा में समझते हैं। "
-            "वीडियो के आखिर में हम एक छोटा सा क्विज़ भी खेलेंगे। "
-            "तो अंत तक बने रहिए और चैनल को सब्सक्राइब करना न भूलें!"
+        intro_narration = (
+            f"नमस्ते दोस्तों! कंप्यूटर कोर्स के डे {topic['day']} में आपका स्वागत है! "
+            f"आज हम {topic['title']} के बारे में जानेंगे।"
         )
         points1 = [
             f"Welcome to {topic['title']} (स्वागत है)",
@@ -185,12 +184,14 @@ def _fallback_script(topic: dict) -> dict:
             f"Day {topic['day']} (दसवां दिन)",
             "Let's learn together (सीखना शुरू करें)"
         ]
+        seg1_narration = f"यह {topic['module']} का एक बहुत ही महत्वपूर्ण हिस्सा है। चलिए इसे बिल्कुल आसान भाषा में समझते हैं।"
         points2 = [
             "Core Concepts (मुख्य बातें)",
             "Real-world Examples (उदाहरण)",
             "Why it matters (क्यों जरूरी है)",
             "Practice regularly (नियमित अभ्यास)"
         ]
+        seg2_narration = "कंप्यूटर के इस भाग को अच्छी तरह समझना बहुत आवश्यक है, ताकि हम इसे दैनिक जीवन में सही ढंग से उपयोग कर सकें।"
         quiz = {
             "question": "क्या कंप्यूटर केवल निर्देशों (instructions) का पालन करता है?",
             "options": [
@@ -200,30 +201,29 @@ def _fallback_script(topic: dict) -> dict:
                 "D) पता नहीं"
             ],
             "correct_answer": "A",
-            "explanation": "कंप्यूटर एक मशीन है और यह केवल यूजर द्वारा दिए गए निर्देशों का ही पालन करता है।"
+            "explanation": "कंप्यूटर एक मशीन है और यह केवल यूजर द्वारा दिए गए निर्देशों का ही पालन करता है।",
+            "narration": "अब वक्त है एक छोटे से क्विज़ का। सवाल है: क्या कंप्यूटर केवल निर्देशों का पालन करता है? कमेंट्स में अपना जवाब दें! सही जवाब है ए, हाँ हमेशा।"
         }
         summary_points = [
             f"हमने {topic['title']} की मूल बातें सीखीं।",
             "कंप्यूटर को आसान उदाहरणों से समझा।",
             "सीखते रहिए और प्रैक्टिस करते रहिए!"
         ]
+        summary_narration = f"तो आज हमने {topic['title']} के बारे में विस्तार से सीखा और समझा कि यह कैसे उपयोगी है।"
+        outro_narration = f"वीडियो पसंद आया तो लाइक और सब्सक्राइब करें! अगले वीडियो में हम अगले टॉपिक पर चर्चा करेंगे। धन्यवाद!"
         short = {
             "title": f"क्या आपको पता है कंप्यूटर कैसे काम करता है? 🤯 #shorts",
             "description": "सीखें कंप्यूटर की ये अद्भुत जानकारी। #shorts #techfacts #computerknowledge",
             "tags": ["shorts", "techfacts", "computer"],
             "narration": f"क्या आप जानते हैं कि कंप्यूटर का दिमाग यानी सीपीयू एक सेकंड में लाखों कैलकुलेशन कर सकता है? यह आपकी पलक झपकने से भी तेज है!",
-            "image_prompt": "A vibrant 3D digital cartoon illustration of a cute glowing computer CPU chip running super fast with happy electric sparks."
+            "image_prompt": "An ultra-realistic close-up photograph of a modern motherboard with golden circuits glowing as data travels through it."
         }
     else:
         title = f"Day {topic['day']}: {topic['title']} | CS Course"
         desc = f"Today we learn about {topic['title']}. Part of our 100-day CS course."
-        narration = (
+        intro_narration = (
             f"Welcome to Day {topic['day']} of our Computer Science course! "
-            f"Today we're learning about {topic['title']}. "
-            f"This is an important topic in {topic['module']}. "
-            "Let's dive in and explore the key concepts together. "
-            "We'll also have a quick pop quiz at the end, so stick around. "
-            "Don't forget to subscribe for daily CS lessons!"
+            f"Today we're learning about {topic['title']}."
         )
         points1 = [
             f"Welcome to {topic['title']}",
@@ -231,12 +231,14 @@ def _fallback_script(topic: dict) -> dict:
             f"Difficulty level: {topic['level']}",
             "Let's explore the key ideas"
         ]
+        seg1_narration = "Let's dive in and explore the key concepts together. This is an important topic to understand."
         points2 = [
             "Understanding the fundamentals",
             "Real-world applications",
             "Why this matters in CS",
             "Common use cases"
         ]
+        seg2_narration = "Now let's look at the core principles and how they are applied in everyday technology."
         quiz = {
             "question": "Which component is known as the brain of the computer?",
             "options": [
@@ -246,13 +248,16 @@ def _fallback_script(topic: dict) -> dict:
                 "D) GPU"
             ],
             "correct_answer": "B",
-            "explanation": "The CPU (Central Processing Unit) processes all instructions and acts as the brain."
+            "explanation": "The CPU (Central Processing Unit) processes all instructions and acts as the brain.",
+            "narration": "Time for a quick pop quiz! Which component is known as the brain of the computer? The answer is B, the CPU!"
         }
         summary_points = [
             f"We covered the basics of {topic['title']}",
             "Understanding theory helps practical coding",
             "Practice makes perfect — try it yourself!"
         ]
+        summary_narration = "To summarize, we went over the main aspects of this topic and why it is crucial."
+        outro_narration = "Thanks for watching! Don't forget to subscribe for daily CS lessons, and see you tomorrow!"
         short = {
             "title": f"The CPU processes faster than you think! 🤯 #shorts",
             "description": "Interesting computer fact about CPU processing speed. #shorts #techfacts",
@@ -265,26 +270,35 @@ def _fallback_script(topic: dict) -> dict:
         "video_title": title,
         "video_description": desc,
         "tags": ["computer science", "programming", "tutorial", "hindi" if is_hi else "english"],
-        "narration": narration,
+        "intro": {
+            "title": f"Day {topic['day']}: {topic['title']}",
+            "narration": intro_narration
+        },
         "segments": [
             {
                 "title": f"Introduction to {topic['title']}",
-                "duration_seconds": 120,
                 "points": points1,
                 "code": None,
-                "image_prompt": "A modern computer workstation with dual monitors"
+                "image_prompt": "An ultra-realistic photograph of a modern computer workstation with dual monitors",
+                "narration": seg1_narration
             },
             {
                 "title": "Core Concepts",
-                "duration_seconds": 120,
                 "points": points2,
                 "code": None,
-                "image_prompt": "A glowing circuit board with data lines"
+                "image_prompt": "A realistic 3D digital render of a glowing circuit board with data lines",
+                "narration": seg2_narration
             }
         ],
         "quiz": quiz,
-        "summary_points": summary_points,
-        "next_topic": "Next topic in the series",
+        "summary": {
+            "points": summary_points,
+            "narration": summary_narration
+        },
+        "outro": {
+            "next_topic": "Next topic in the series",
+            "narration": outro_narration
+        },
         "short": short
     }
 

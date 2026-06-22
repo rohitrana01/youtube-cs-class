@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 
 from config import OUTPUT_DIR, CURRICULUM_FILE, LANGUAGE
 from modules.script_generator   import generate_script
-from modules.tts_narrator       import generate_narration
+from modules.tts_narrator       import generate_narration, generate_course_narration
 from modules.animator           import create_animation, create_short_animation
 from modules.video_assembler    import assemble_video
 from modules.thumbnail_generator import create_thumbnail
@@ -93,8 +93,8 @@ def run():
     # ── 2. Generate TTS narration ────────────────────────────────────────────
     print("\n[2/6] 🎙️   Generating TTS narrations…")
     # Main Video
-    audio_path, audio_duration = generate_narration(
-        script_data["narration"], out
+    audio_path, audio_duration, durations = generate_course_narration(
+        script_data, out
     )
     print(f"       Main Video Duration: {audio_duration:.1f}s")
     
@@ -110,7 +110,7 @@ def run():
     
     # Main Video
     anim_path = os.path.join(out, "animation.mp4")
-    create_animation(script_data, topic, audio_duration, anim_path)
+    create_animation(script_data, topic, durations, anim_path)
     
     # YouTube Short (1080x1920 vertical)
     short_anim_path = os.path.join(out, "animation_short.mp4")
