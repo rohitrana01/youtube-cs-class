@@ -45,7 +45,11 @@
         "mouse",
         "monitor",
         "IO"
-      ]
+      ],
+      "channel": "LearnCS Daily",
+      "uploaded": true,
+      "video_id": "KodEkpn35rM",
+      "upload_date": "2026-06-22T09:33:54.452729+00:00"
     },
     {
       "id": "cs004",
