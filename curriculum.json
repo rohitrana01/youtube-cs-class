@@ -62,7 +62,11 @@
         "processor",
         "cores",
         "silicon"
-      ]
+      ],
+      "channel": "LearnCS Daily",
+      "uploaded": true,
+      "video_id": "7rINv_yBfZk",
+      "upload_date": "2026-06-22T11:07:55.105555+00:00"
     },
     {
       "id": "cs005",
