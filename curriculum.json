@@ -81,9 +81,7 @@
         "memory"
       ],
       "channel": "LearnCS Daily",
-      "uploaded": true,
-      "video_id": "dLYbczx7EnM",
-      "upload_date": "2026-06-23T08:57:41.126630+00:00"
+      "uploaded": false
     },
     {
       "id": "cs006",
@@ -97,9 +95,7 @@
         "hardware"
       ],
       "channel": "LearnCS Daily",
-      "uploaded": true,
-      "video_id": "3lBm5NDyotA",
-      "upload_date": "2026-06-23T09:12:56.827860+00:00"
+      "uploaded": false
     },
     {
       "id": "cs007",
