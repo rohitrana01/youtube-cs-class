@@ -79,7 +79,11 @@
         "SSD",
         "HDD",
         "memory"
-      ]
+      ],
+      "channel": "LearnCS Daily",
+      "uploaded": true,
+      "video_id": "fuFxsrt5KBg",
+      "upload_date": "2026-06-23T07:05:52.316419+00:00"
     },
     {
       "id": "cs006",
