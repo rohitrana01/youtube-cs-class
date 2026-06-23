@@ -65,20 +65,30 @@ def generate_course_narration(script_data: dict, output_dir: str) -> tuple[str, 
     sections = []
     
     # Intro
-    sections.append(("intro", script_data["intro"]["narration"], "narration_intro.mp3"))
+    intro_block = script_data.get("intro") or script_data.get("introduction") or {}
+    intro_narration = intro_block.get("narration") or intro_block.get("voiceover") or intro_block.get("speech") or ""
+    sections.append(("intro", intro_narration, "narration_intro.mp3"))
     
     # Segments
-    for idx, seg in enumerate(script_data.get("segments", [])):
-        sections.append((f"seg_{idx}", seg["narration"], f"narration_seg_{idx}.mp3"))
+    segs = script_data.get("segments") or script_data.get("slides") or script_data.get("sections") or []
+    for idx, seg in enumerate(segs):
+        seg_narration = seg.get("narration") or seg.get("voiceover") or seg.get("speech") or ""
+        sections.append((f"seg_{idx}", seg_narration, f"narration_seg_{idx}.mp3"))
         
     # Quiz
-    sections.append(("quiz", script_data["quiz"]["narration"], "narration_quiz.mp3"))
+    quiz_block = script_data.get("quiz") or script_data.get("pop_quiz") or {}
+    quiz_narration = quiz_block.get("narration") or quiz_block.get("voiceover") or quiz_block.get("speech") or ""
+    sections.append(("quiz", quiz_narration, "narration_quiz.mp3"))
     
     # Summary
-    sections.append(("summary", script_data["summary"]["narration"], "narration_summary.mp3"))
+    summary_block = script_data.get("summary") or script_data.get("takeaways") or {}
+    summary_narration = summary_block.get("narration") or summary_block.get("voiceover") or summary_block.get("speech") or ""
+    sections.append(("summary", summary_narration, "narration_summary.mp3"))
     
     # Outro
-    sections.append(("outro", script_data["outro"]["narration"], "narration_outro.mp3"))
+    outro_block = script_data.get("outro") or script_data.get("conclusion") or {}
+    outro_narration = outro_block.get("narration") or outro_block.get("voiceover") or outro_block.get("speech") or ""
+    sections.append(("outro", outro_narration, "narration_outro.mp3"))
     
     # 2. Generate audio for each section and record durations
     durations = {

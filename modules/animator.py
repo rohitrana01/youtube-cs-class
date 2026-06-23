@@ -406,10 +406,12 @@ def create_animation(script_data: dict, topic: dict,
     """
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
 
-    segments   = script_data.get("segments", [])
-    summary    = script_data.get("summary", {}).get("points", []) or script_data.get("summary_points", [])
-    next_topic = script_data.get("outro", {}).get("next_topic", "") or script_data.get("next_topic", "")
-    quiz       = script_data.get("quiz", {})
+    segments   = script_data.get("segments") or script_data.get("slides") or script_data.get("sections") or []
+    summary_block = script_data.get("summary") or script_data.get("takeaways") or {}
+    summary    = summary_block.get("points") or summary_block.get("key_points") or script_data.get("summary_points") or []
+    outro_block = script_data.get("outro") or script_data.get("conclusion") or {}
+    next_topic = outro_block.get("next_topic") or script_data.get("next_topic") or ""
+    quiz       = script_data.get("quiz") or script_data.get("pop_quiz") or {}
 
     total_duration = (
         durations["intro"] +
@@ -430,10 +432,10 @@ def create_animation(script_data: dict, topic: dict,
 
     # ── Content ──
     for seg_idx, seg in enumerate(segments):
-        seg_dur = durations["segments"][seg_idx] if seg_idx < len(durations["segments"]) else 40.0
-        points  = seg.get("points", [])
+        seg_dur = durations["segments"][seg_idx] if (durations.get("segments") and seg_idx < len(durations["segments"])) else 40.0
+        points  = seg.get("points") or seg.get("point") or seg.get("key_points") or seg.get("bullet_points") or []
         code    = seg.get("code")
-        prompt  = seg.get("image_prompt")
+        prompt  = seg.get("image_prompt") or seg.get("visual_prompt") or seg.get("image")
         n       = max(len(points), 1)
         pt_dur  = seg_dur / n
         
