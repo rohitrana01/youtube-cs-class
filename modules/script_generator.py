@@ -149,8 +149,24 @@ Rules:
         )
         raw = response.text.strip()
     except Exception as e:
-        print(f"[script_generator] Gemini API error: {e}")
-        return _fallback_script(topic)
+        print(f"[script_generator] Gemini API error with model {GEMINI_MODEL}: {e}")
+        fallback_model_name = "gemini-1.5-flash"
+        if GEMINI_MODEL != fallback_model_name:
+            print(f"[script_generator] Retrying with fallback model {fallback_model_name}...")
+            try:
+                model = genai.GenerativeModel(fallback_model_name)
+                response = model.generate_content(
+                    prompt,
+                    generation_config=genai.GenerationConfig(
+                        response_mime_type="application/json"
+                    )
+                )
+                raw = response.text.strip()
+            except Exception as e2:
+                print(f"[script_generator] Gemini API error with fallback model {fallback_model_name}: {e2}")
+                return _fallback_script(topic)
+        else:
+            return _fallback_script(topic)
 
     # Strip accidental markdown fences
     raw = re.sub(r'^```json\s*', '', raw)
