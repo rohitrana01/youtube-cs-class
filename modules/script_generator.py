@@ -52,9 +52,11 @@ def generate_script(topic: dict) -> dict:
 IMPORTANT LANGUAGE RULES FOR HINDI (hi):
 1. video_title & video_description: Write in clean, highly appealing Hindi (using Devanagari script). Keep technical terms as they are, but in Devanagari.
 2. All narration fields (intro.narration, segments[].narration, quiz.narration, summary.narration, outro.narration): Must be in natural, conversational spoken Hindi (Devanagari script, e.g., "नमस्ते दोस्तों! आज हम बात करेंगे..."). Explain concepts simply. Write technical names in Devanagari (कंप्यूटर, रैम, सीपीयू).
+   CRITICAL: Do NOT write both the English spelling and Devanagari spelling of the same technical term, and do NOT put translations of terms in parentheses in the narration (e.g., do NOT write "CPU (सेंट्रल प्रोसेसिंग यूनिट)" or "रैम (RAM)"). Write only one format (prefer Devanagari, e.g., "सीपीयू" or "रैम") so the TTS voice doesn't read the same word twice in English and Hindi accents.
 3. segments[].points (Slide Text): Write in bilingual Hinglish or English with Hindi meaning in brackets (e.g., "CPU: Central Processing Unit (कंप्यूटर का दिमाग)"). Keep it under 80 characters.
 4. quiz & summary fields (except their narrations): Write them in natural Hindi (Devanagari script).
 5. short: Write the "narration" and "title" in highly viral spoken Hindi (written in Devanagari) to hook normal people instantly. Keep technical terms in Devanagari.
+   CRITICAL: Apply the same duplication prevention rule here.
 """
     else:
         lang_instruction = """
