@@ -22,7 +22,7 @@ def generate_script(topic: dict) -> dict:
           "duration_seconds": int,
           "points": [str],       # Bullet points for slides
           "code": str | null,    # Optional code snippet
-          "image_prompt": str    # Visual prompt for AI image generator
+          "image_prompts": [str] # One visual prompt for each bullet point
         }
       ],
       "quiz": {
@@ -38,7 +38,7 @@ def generate_script(topic: dict) -> dict:
         "description": str,      # Viral description with hashtags
         "tags": [str],
         "narration": str,        # Fast-paced ~45-word narration under 25s
-        "image_prompt": str      # Engaging visual (specifying cartoon or real style)
+        "image_prompts": [str]   # List of 2-3 engaging vertical visual prompts
       }
     }
     """
@@ -92,7 +92,11 @@ The JSON must match this exact structure:
         "[Punchy bullet point 3]"
       ],
       "code": null,
-      "image_prompt": "[A highly specific visual metaphor or conceptual diagram explaining this section. Force a realistic style, starting with 'An ultra-realistic photograph of...' or 'A realistic 3D digital render of...'. Avoid cartoonish styles. Describe the scene in detail. Do NOT request any text in the image.]",
+      "image_prompts": [
+        "[Image prompt 1 matching bullet point 1. Force a realistic style starting with 'An ultra-realistic photograph of...' or 'A realistic 3D digital render of...'. Describe the scene in detail. No cartoons. No text.]",
+        "[Image prompt 2 matching bullet point 2. Force a realistic style starting with 'An ultra-realistic photograph of...' or 'A realistic 3D digital render of...'. Describe the scene in detail. No cartoons. No text.]",
+        "[Image prompt 3 matching bullet point 3. Force a realistic style starting with 'An ultra-realistic photograph of...' or 'A realistic 3D digital render of...'. Describe the scene in detail. No cartoons. No text.]"
+      ],
       "narration": "[Write a ~150-word detailed narration explaining the points of this section in a conversational, easy-to-understand way. Do not write too fast or slow. Keep it highly engaging.]"
     }}
   ],
@@ -125,7 +129,10 @@ The JSON must match this exact structure:
     "description": "[A punchy 1-sentence description with viral hashtags, e.g., '#shorts #techfacts #computer']",
     "tags": ["shorts", "techfacts", "viral", "computer"],
     "narration": "[An extremely fast-paced, high-curiosity 40-50 word narration script that fits within 25 seconds. Start instantly with a mind-blowing hook. E.g., 'Wait, did you know that your computer RAM is actually just like a messy student desk?']",
-    "image_prompt": "[A highly visual description of an image for a vertical 1080x1920 layout. Force a realistic style, starting with 'An ultra-realistic close-up photograph of...' or 'A realistic 3D digital render of...'. Avoid cartoonish styles. Do NOT request text.]"
+    "image_prompts": [
+      "[Image prompt 1 for first half of vertical Short layout (1080x1920). Force realistic close-up photo or 3D render. No cartoons. No text.]",
+      "[Image prompt 2 for second half of vertical Short layout (1080x1920). Force realistic close-up photo or 3D render. No cartoons. No text.]"
+    ]
   }}
 }}
 
@@ -133,7 +140,8 @@ Rules:
 - Include 3-5 segments.
 - Keep each slide bullet point simple, punchy, and under 80 characters.
 - Always set the `"code"` field to `null` since this is a non-coding computer course.
-- Ensure all `image_prompt` fields use a realistic, premium photographic or digital render style (no cartoons).
+- Ensure all `"image_prompts"` fields contain exactly the same number of image prompts as bullet points for each segment (e.g. 3 bullet points = 3 image prompts).
+- Ensure all visual prompts specify a realistic, premium photographic or digital render style (no cartoons).
 - Enforce the YouTube Short to be 20-30 seconds with an immediate curiosity hook and a realistic style.
 - Return ONLY the raw JSON object."""
 
@@ -234,7 +242,10 @@ def _fallback_script(topic: dict) -> dict:
             "description": "सीखें कंप्यूटर की ये अद्भुत जानकारी। #shorts #techfacts #computerknowledge",
             "tags": ["shorts", "techfacts", "computer"],
             "narration": f"क्या आप जानते हैं कि कंप्यूटर का दिमाग यानी सीपीयू एक सेकंड में लाखों कैलकुलेशन कर सकता है? यह आपकी पलक झपकने से भी तेज है!",
-            "image_prompt": "An ultra-realistic close-up photograph of a modern motherboard with golden circuits glowing as data travels through it."
+            "image_prompts": [
+                "An ultra-realistic close-up photograph of a modern motherboard with golden circuits glowing as data travels through it.",
+                "A realistic 3D digital render of a CPU chip lighting up with futuristic blue neon energy pulses."
+            ]
         }
     else:
         title = f"Day {topic['day']}: {topic['title']} | CS Course"
@@ -281,7 +292,10 @@ def _fallback_script(topic: dict) -> dict:
             "description": "Interesting computer fact about CPU processing speed. #shorts #techfacts",
             "tags": ["shorts", "techfacts", "computer"],
             "narration": "Did you know that your computer's CPU can process billions of calculations in a single second? That's faster than the speed of human thought!",
-            "image_prompt": "An ultra-realistic close-up photograph of a modern motherboard with golden circuits glowing as data travels through it."
+            "image_prompts": [
+                "An ultra-realistic close-up photograph of a modern motherboard with golden circuits glowing as data travels through it.",
+                "A realistic 3D digital render of a CPU chip lighting up with futuristic blue neon energy pulses."
+            ]
         }
 
     return {
@@ -297,14 +311,24 @@ def _fallback_script(topic: dict) -> dict:
                 "title": f"Introduction to {topic['title']}",
                 "points": points1,
                 "code": None,
-                "image_prompt": "An ultra-realistic photograph of a modern computer workstation with dual monitors",
+                "image_prompts": [
+                    "An ultra-realistic photograph of a modern computer workstation with dual monitors",
+                    "A realistic 3D digital render of a CPU glowing in dark blue light on a clean desk",
+                    "An ultra-realistic close-up photograph of a sleek computer power button with neon backlight",
+                    "A realistic 3D render of network server racks glowing with server activity lights"
+                ],
                 "narration": seg1_narration
             },
             {
                 "title": "Core Concepts",
                 "points": points2,
                 "code": None,
-                "image_prompt": "A realistic 3D digital render of a glowing circuit board with data lines",
+                "image_prompts": [
+                    "A realistic 3D digital render of a glowing circuit board with data lines",
+                    "An ultra-realistic close-up photograph of a shiny computer memory RAM stick",
+                    "A realistic 3D render of digital data folders floating in a clean cyberspace",
+                    "An ultra-realistic photo of a high-tech computer lab with green server monitors"
+                ],
                 "narration": seg2_narration
             }
         ],
