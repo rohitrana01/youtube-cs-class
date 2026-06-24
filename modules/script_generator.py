@@ -172,9 +172,11 @@ Rules:
                 raw = response.text.strip()
             except Exception as e2:
                 print(f"[script_generator] Gemini API error with fallback model {fallback_model_name}: {e2}")
-                return _fallback_script(topic)
+                raise RuntimeError(
+                    f"Gemini API failed for both model {GEMINI_MODEL} ({e}) and fallback {fallback_model_name} ({e2})."
+                ) from e2
         else:
-            return _fallback_script(topic)
+            raise RuntimeError(f"Gemini API failed for model {GEMINI_MODEL}: {e}") from e
 
     # Strip accidental markdown fences
     raw = re.sub(r'^```json\s*', '', raw)
@@ -187,8 +189,7 @@ Rules:
     except json.JSONDecodeError as e:
         print(f"[script_generator] JSON parse error: {e}")
         print(f"[script_generator] Raw response (first 500 chars): {raw[:500]}")
-        # Return a minimal fallback so the pipeline doesn't crash
-        data = _fallback_script(topic)
+        raise ValueError(f"Failed to parse Gemini response as JSON: {e}") from e
 
     return data
 
