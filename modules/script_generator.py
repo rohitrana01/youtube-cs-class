@@ -145,38 +145,62 @@ Rules:
 - Enforce the YouTube Short to be 20-30 seconds with an immediate curiosity hook and a realistic style.
 - Return ONLY the raw JSON object."""
 
+    import time
     try:
         import google.generativeai as genai
         genai.configure(api_key=GEMINI_API_KEY)
-        model = genai.GenerativeModel(GEMINI_MODEL)
-        response = model.generate_content(
-            prompt,
-            generation_config=genai.GenerationConfig(
-                response_mime_type="application/json"
-            )
-        )
-        raw = response.text.strip()
     except Exception as e:
-        print(f"[script_generator] Gemini API error with model {GEMINI_MODEL}: {e}")
-        fallback_model_name = "gemini-1.5-flash"
-        if GEMINI_MODEL != fallback_model_name:
-            print(f"[script_generator] Retrying with fallback model {fallback_model_name}...")
+        raise RuntimeError(f"Failed to import or configure google.generativeai: {e}") from e
+
+    def call_gemini_with_retry(model_name: str, max_retries: int = 3, base_delay: float = 65.0) -> str:
+        model = genai.GenerativeModel(model_name)
+        for attempt in range(1, max_retries + 1):
             try:
-                model = genai.GenerativeModel(fallback_model_name)
                 response = model.generate_content(
                     prompt,
                     generation_config=genai.GenerationConfig(
                         response_mime_type="application/json"
                     )
                 )
-                raw = response.text.strip()
-            except Exception as e2:
-                print(f"[script_generator] Gemini API error with fallback model {fallback_model_name}: {e2}")
-                raise RuntimeError(
-                    f"Gemini API failed for both model {GEMINI_MODEL} ({e}) and fallback {fallback_model_name} ({e2})."
-                ) from e2
-        else:
-            raise RuntimeError(f"Gemini API failed for model {GEMINI_MODEL}: {e}") from e
+                return response.text.strip()
+            except Exception as e:
+                is_rate_limit = (
+                    "ResourceExhausted" in type(e).__name__ or 
+                    "429" in str(e) or 
+                    "quota" in str(e).lower() or
+                    getattr(e, 'code', None) == 429
+                )
+                if is_rate_limit:
+                    print(f"[script_generator] Rate limit (429) hit for model {model_name} on attempt {attempt}/{max_retries}: {e}")
+                    if attempt == max_retries:
+                        raise e
+                    sleep_time = base_delay * attempt
+                    print(f"[script_generator] Sleeping for {sleep_time}s before retrying...")
+                    time.sleep(sleep_time)
+                else:
+                    raise e
+
+    models_to_try = [GEMINI_MODEL]
+    for fallback in ["gemini-2.0-flash", "gemini-1.5-flash"]:
+        if fallback not in models_to_try:
+            models_to_try.append(fallback)
+
+    raw = None
+    last_err = None
+    for model_name in models_to_try:
+        try:
+            print(f"[script_generator] Querying Gemini model {model_name}...")
+            raw = call_gemini_with_retry(model_name)
+            break
+        except Exception as e:
+            print(f"[script_generator] Gemini model {model_name} failed: {e}")
+            last_err = e
+            continue
+
+    if raw is None:
+        raise RuntimeError(
+            f"Gemini API failed for all models in {models_to_try}. Last error: {last_err}"
+        ) from last_err
 
     # Strip accidental markdown fences
     raw = re.sub(r'^```json\s*', '', raw)
