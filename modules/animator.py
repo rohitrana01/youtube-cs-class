@@ -12,7 +12,7 @@ import urllib.parse
 import re
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
-from moviepy.editor import ImageClip, concatenate_videoclips
+from moviepy.editor import ImageClip, concatenate_videoclips, ImageSequenceClip
 
 # ── Palette ─────────────────────────────────────────────────────────────────
 BG       = (15, 20, 40)
@@ -211,46 +211,132 @@ def _title_slide(topic, pct):
     return np.array(img)
 
 
-def _content_slide(seg_title, all_points, show_n, code, pct, ref_img=None):
-    img = Image.new("RGB", (W, H), BG)
-    d = ImageDraw.Draw(img)
-    _base(d, img)
+_VIGNETTE_CACHE = {}
+
+def _get_vignette_image(width, height):
+    key = (width, height)
+    if key in _VIGNETTE_CACHE:
+        return _VIGNETTE_CACHE[key]
+    
+    cx, cy = width / 2.0, height / 2.0
+    x = np.linspace(0, width - 1, width)
+    y = np.linspace(0, height - 1, height)
+    xv, yv = np.meshgrid(x, y)
+    
+    rx = width / 2.0
+    ry = height / 2.0
+    dist = np.sqrt(((xv - cx) / rx) ** 2 + ((yv - cy) / ry) ** 2)
+    
+    alpha = np.zeros_like(dist)
+    mask_ramp = dist > 0.35
+    alpha[mask_ramp] = (dist[mask_ramp] - 0.35) / (1.0 - 0.35) * 153.0
+    alpha = np.clip(alpha, 0, 153).astype(np.uint8)
+    
+    vignette_np = np.zeros((height, width, 4), dtype=np.uint8)
+    vignette_np[:, :, 3] = alpha
+    vignette = Image.fromarray(vignette_np, "RGBA")
+    
+    _VIGNETTE_CACHE[key] = vignette
+    return vignette
+
+
+def _apply_ken_burns(ref_img, width, height, progress, scale_start=1.0, scale_end=1.08):
+    scale = scale_start + (scale_end - scale_start) * progress
+    img_w, img_h = ref_img.size
+    target_aspect = width / height
+    img_aspect = img_w / img_h
+    
+    if img_aspect > target_aspect:
+        crop_h = img_h / scale
+        crop_w = crop_h * target_aspect
+    else:
+        crop_w = img_w / scale
+        crop_h = crop_w / target_aspect
+        
+    cx, cy = img_w / 2.0, img_h / 2.0
+    x0 = max(0.0, cx - crop_w / 2.0)
+    y0 = max(0.0, cy - crop_h / 2.0)
+    x1 = min(float(img_w), cx + crop_w / 2.0)
+    y1 = min(float(img_h), cy + crop_h / 2.0)
+    
+    cropped = ref_img.crop((int(x0), int(y0), int(x1), int(y1)))
+    return cropped.resize((width, height), Image.Resampling.LANCZOS)
+
+
+def _apply_overlay_and_vignette(img, overlay_opacity=0.55):
+    w, h = img.size
+    overlay = Image.new("RGBA", (w, h), (15, 23, 42, int(255 * overlay_opacity)))
+    rgba_img = Image.alpha_composite(img.convert("RGBA"), overlay)
+    vignette = _get_vignette_image(w, h)
+    return Image.alpha_composite(rgba_img, vignette)
+
+
+def _content_slide(seg_title, all_points, show_n, code, pct, ref_img=None, seg_progress=0.0):
     f = _fonts()
 
-    # Section heading
-    d.text((80, 40), seg_title, font=f["heading"], fill=(255, 255, 255))
-    tw = d.textbbox((0, 0), seg_title, font=f["heading"])[2]
-    d.rectangle([80, 104, 80 + tw, 109], fill=ACCENT)
+    if ref_img:
+        zoomed = _apply_ken_burns(ref_img, W, H, seg_progress)
+        img = _apply_overlay_and_vignette(zoomed, overlay_opacity=0.55)
+        d = ImageDraw.Draw(img)
 
-    # If there's an image, text takes up 900px, otherwise W - 200
-    text_max_w = 800 if ref_img else W - 200
+        # Draw left card panel
+        d.rounded_rectangle([80, 80, 1080, 1000], radius=24, fill=(15, 23, 42, 217), outline=(99, 102, 241, 128), width=2)
 
-    # Bullet points
-    y = 150
-    for i, point in enumerate(all_points[:show_n]):
-        is_current = i == show_n - 1
-        col   = (255, 255, 255) if is_current else MUTED
-        b_col = ACCENT            if is_current else (51, 65, 85)
+        # Title
+        d.text((130, 130), seg_title, font=f["heading"], fill=(255, 255, 255, 255))
+        tw = d.textbbox((0, 0), seg_title, font=f["heading"])[2]
+        d.rectangle([130, 194, 130 + tw, 199], fill=(99, 102, 241, 255))
 
-        # Bullet dot
-        d.ellipse([80, y + 10, 100, y + 30], fill=b_col)
-        y = _wrap(d, point, 120, y, f["body"] if not is_current else f["body_b"],
-                  col, text_max_w)
-        y += 12
+        # Bullet points
+        y = 240
+        text_max_w = 840
+        for i, point in enumerate(all_points[:show_n]):
+            is_current = i == show_n - 1
+            col   = (255, 255, 255, 255) if is_current else (148, 163, 184, 255)
+            b_col = (99, 102, 241, 255)  if is_current else (51, 65, 85, 255)
 
-    # Code block if it's the last point revealed
-    if code and show_n >= len(all_points):
-        _code_block(d, code, 80, y + 10, H - 60)
+            # Bullet dot
+            d.ellipse([130, y + 10, 150, y + 30], fill=b_col)
+            y = _wrap(d, point, 170, y, f["body"] if not is_current else f["body_b"], col, text_max_w)
+            y += 12
 
-    # Reference image
-    if ref_img and show_n >= len(all_points) // 2:
-        # Paste image on the right side
-        ix = W - ref_img.width - 80
-        iy = (H - ref_img.height) // 2
-        img.paste(ref_img, (ix, iy), ref_img)
+        # Code block
+        if code and show_n >= len(all_points):
+            _code_block(d, code, 130, y + 10, 950)
 
-    _progress(d, pct)
-    return np.array(img)
+        # Paste watermark on the top right
+        wm = _load_watermark()
+        if wm:
+            img.paste(wm, (W - wm.width - 40, 40), wm)
+
+        _progress(d, pct)
+        return np.array(img.convert("RGB"))
+    else:
+        img = Image.new("RGB", (W, H), BG)
+        d = ImageDraw.Draw(img)
+        _base(d, img)
+
+        # Section heading
+        d.text((80, 40), seg_title, font=f["heading"], fill=(255, 255, 255))
+        tw = d.textbbox((0, 0), seg_title, font=f["heading"])[2]
+        d.rectangle([80, 104, 80 + tw, 109], fill=ACCENT)
+
+        y = 150
+        text_max_w = W - 200
+        for i, point in enumerate(all_points[:show_n]):
+            is_current = i == show_n - 1
+            col   = (255, 255, 255) if is_current else MUTED
+            b_col = ACCENT            if is_current else (51, 65, 85)
+
+            d.ellipse([80, y + 10, 100, y + 30], fill=b_col)
+            y = _wrap(d, point, 120, y, f["body"] if not is_current else f["body_b"], col, text_max_w)
+            y += 12
+
+        if code and show_n >= len(all_points):
+            _code_block(d, code, 80, y + 10, H - 60)
+
+        _progress(d, pct)
+        return np.array(img)
 
 
 def _summary_slide(title, points, pct):
@@ -367,29 +453,25 @@ def _quiz_slide(quiz_data, show_answer, timer_pct, pct):
     return np.array(img)
 
 
-def _get_ai_image(prompt, out_dir, seg_idx):
+def _get_ai_image(prompt, out_dir, seg_idx, width=1920, height=1080):
     if not prompt:
         return None
-    path = os.path.join(out_dir, f"img_{seg_idx}.png")
+    path = os.path.join(out_dir, f"img_{seg_idx}_{width}x{height}.png")
     if os.path.exists(path):
-        return Image.open(path)
-    print(f"  [animator] Fetching AI image for segment {seg_idx}...")
+        try:
+            return Image.open(path)
+        except Exception:
+            pass
+    print(f"  [animator] Fetching AI image for segment {seg_idx} ({width}x{height})...")
     safe_prompt = urllib.parse.quote(prompt)
-    url = f"https://image.pollinations.ai/prompt/{safe_prompt}?width=800&height=600&nologo=true"
+    url = f"https://image.pollinations.ai/prompt/{safe_prompt}?width={width}&height={height}&nologo=true"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     }
     try:
         resp = requests.get(url, headers=headers, timeout=15)
         resp.raise_for_status()
-        img = Image.open(io.BytesIO(resp.content)).convert("RGBA")
-        
-        # Round corners
-        mask = Image.new("L", img.size, 0)
-        draw = ImageDraw.Draw(mask)
-        draw.rounded_rectangle([0, 0, img.size[0], img.size[1]], radius=20, fill=255)
-        img.putalpha(mask)
-        
+        img = Image.open(io.BytesIO(resp.content)).convert("RGB")
         img.save(path)
         return img
     except Exception as e:
@@ -423,6 +505,7 @@ def create_animation(script_data: dict, topic: dict,
 
     clips = []
     elapsed = 0.0
+    fps = 24
 
     # ── Intro ──
     intro_dur = durations["intro"]
@@ -439,13 +522,29 @@ def create_animation(script_data: dict, topic: dict,
         n       = max(len(points), 1)
         pt_dur  = seg_dur / n
         
-        ref_img = _get_ai_image(prompt, os.path.dirname(output_path), seg_idx)
+        ref_img = _get_ai_image(prompt, os.path.dirname(output_path), seg_idx, width=1920, height=1080)
 
-        for i in range(1, n + 1):
-            pct   = elapsed / total_duration
-            frame = _content_slide(seg.get("title", ""), points, i, code, pct, ref_img)
-            clips.append(ImageClip(frame, duration=pt_dur))
-            elapsed += pt_dur
+        total_seg_frames = int(seg_dur * fps)
+        if total_seg_frames > 0:
+            segment_frames = []
+            for f in range(total_seg_frames):
+                t = f / fps
+                seg_progress = f / max(total_seg_frames - 1, 1)
+                show_n = int(t / pt_dur) + 1
+                show_n = min(show_n, n)
+                
+                pct = (elapsed + t) / total_duration
+                frame = _content_slide(seg.get("title", ""), points, show_n, code, pct, ref_img, seg_progress)
+                segment_frames.append(frame)
+                
+            clips.append(ImageSequenceClip(segment_frames, fps=fps))
+        else:
+            # Fallback if duration is 0
+            pct = elapsed / total_duration
+            frame = _content_slide(seg.get("title", ""), points, n, code, pct, ref_img, 0.0)
+            clips.append(ImageClip(frame, duration=seg_dur))
+            
+        elapsed += seg_dur
 
     # ── Interactive Pop Quiz ──
     if quiz:
@@ -484,7 +583,7 @@ def create_animation(script_data: dict, topic: dict,
     video = concatenate_videoclips(clips, method="compose")
     video.write_videofile(
         output_path,
-        fps=24,
+        fps=fps,
         codec="libx264",
         audio=False,
         threads=4,
@@ -494,84 +593,121 @@ def create_animation(script_data: dict, topic: dict,
     return output_path
 
 
-def _short_frame(phrase, short_img, pct, timer_pct):
+def _short_frame(phrase, short_img, pct, timer_pct, short_progress=0.0):
     SW, SH = 1080, 1920
-    img = Image.new("RGB", (SW, SH), BG)
-    d = ImageDraw.Draw(img)
     f = _fonts()
 
-    # Draw vertical gradient background
-    for y in range(SH):
-        shade = int(y / SH * 12)
-        d.line([(0, y), (SW, y)], fill=(BG[0]+shade, BG[1]+shade+3, BG[2]+shade+5))
-    d.rectangle([0, 0, SW, 12], fill=ACCENT)
-
-    # Centered Watermark Logo near the top
-    wm = _load_watermark()
-    if wm:
-        w_w = int(wm.width * 1.5)
-        w_h = int(wm.height * 1.5)
-        wm_resized = wm.resize((w_w, w_h), Image.Resampling.LANCZOS)
-        img.paste(wm_resized, ((SW - w_w) // 2, 100), wm_resized)
-
-    # Draw short visual image
     if short_img:
-        iw = 920
-        aspect = short_img.width / short_img.height
-        ih = int(iw / aspect)
-        if ih > 800:
-            ih = 800
-            iw = int(ih * aspect)
-        
-        short_img_resized = short_img.resize((iw, ih), Image.Resampling.LANCZOS)
-        
-        mask = Image.new("L", (iw, ih), 0)
-        draw_mask = ImageDraw.Draw(mask)
-        draw_mask.rounded_rectangle([0, 0, iw, ih], radius=24, fill=255)
-        short_img_resized.putalpha(mask)
+        zoomed = _apply_ken_burns(short_img, SW, SH, short_progress)
+        img = _apply_overlay_and_vignette(zoomed, overlay_opacity=0.65)
+        d = ImageDraw.Draw(img)
 
-        img.paste(short_img_resized, ((SW - iw) // 2, 320), short_img_resized)
+        # Centered Watermark Logo near the top
+        wm = _load_watermark()
+        if wm:
+            w_w = int(wm.width * 1.5)
+            w_h = int(wm.height * 1.5)
+            wm_resized = wm.resize((w_w, w_h), Image.Resampling.LANCZOS)
+            img.paste(wm_resized, ((SW - w_w) // 2, 100), wm_resized)
 
-    # Draw Large Centered Text Card on the bottom half
-    card_y = 1180
-    card_w = 920
-    card_h = 500
-    card_x = (SW - card_w) // 2
-    
-    d.rounded_rectangle([card_x, card_y, card_x + card_w, card_y + card_h], radius=20, fill=(20, 28, 50), outline=ACCENT, width=3)
-    
-    short_font = ImageFont.truetype("fonts/Poppins-Bold.ttf", 46) if os.path.exists("fonts/Poppins-Bold.ttf") else f["heading"]
-    
-    lh = short_font.size + 15
-    words = phrase.split()
-    lines = []
-    current_line = []
-    for word in words:
-        current_line.append(word)
-        bb = d.textbbox((0, 0), " ".join(current_line), font=short_font)
-        if bb[2] > card_w - 80 and len(current_line) > 1:
-            current_line.pop()
+        # Draw Large Centered Text Card on the bottom half
+        card_y = 1180
+        card_w = 920
+        card_h = 500
+        card_x = (SW - card_w) // 2
+
+        d.rounded_rectangle([card_x, card_y, card_x + card_w, card_y + card_h], radius=20, fill=(20, 28, 50, 230), outline=(99, 102, 241, 255), width=3)
+
+        short_font = ImageFont.truetype("fonts/Poppins-Bold.ttf", 46) if os.path.exists("fonts/Poppins-Bold.ttf") else f["heading"]
+
+        lh = short_font.size + 15
+        words = phrase.split()
+        lines = []
+        current_line = []
+        for word in words:
+            current_line.append(word)
+            bb = d.textbbox((0, 0), " ".join(current_line), font=short_font)
+            if bb[2] > card_w - 80 and len(current_line) > 1:
+                current_line.pop()
+                lines.append(" ".join(current_line))
+                current_line = [word]
+        if current_line:
             lines.append(" ".join(current_line))
-            current_line = [word]
-    if current_line:
-        lines.append(" ".join(current_line))
 
-    total_text_h = len(lines) * lh
-    start_y = card_y + (card_h - total_text_h) // 2
-    for line in lines:
-        bb = d.textbbox((0, 0), line, font=short_font)
-        line_w = bb[2]
-        d.text((card_x + (card_w - line_w) // 2, start_y), line, font=short_font, fill=(255, 255, 255))
-        start_y += lh
+        total_text_h = len(lines) * lh
+        start_y = card_y + (card_h - total_text_h) // 2
+        for line in lines:
+            bb = d.textbbox((0, 0), line, font=short_font)
+            line_w = bb[2]
+            d.text((card_x + (card_w - line_w) // 2, start_y), line, font=short_font, fill=(255, 255, 255, 255))
+            start_y += lh
 
-    # Draw a bottom progress bar
-    prog_w = SW - 160
-    prog_h = 10
-    prog_y = SH - 100
-    d.rounded_rectangle([80, prog_y, 80 + prog_w, prog_y + prog_h], radius=5, fill=(30, 41, 59))
-    d.rounded_rectangle([80, prog_y, 80 + int(prog_w * timer_pct), prog_y + prog_h], radius=5, fill=ACCENT)
+        # Draw a bottom progress bar
+        prog_w = SW - 160
+        prog_h = 10
+        prog_y = SH - 100
+        d.rounded_rectangle([80, prog_y, 80 + prog_w, prog_y + prog_h], radius=5, fill=(30, 41, 59, 255))
+        d.rounded_rectangle([80, prog_y, 80 + int(prog_w * timer_pct), prog_y + prog_h], radius=5, fill=(99, 102, 241, 255))
 
-    return np.array(img)
+        return np.array(img.convert("RGB"))
+    else:
+        img = Image.new("RGB", (SW, SH), BG)
+        d = ImageDraw.Draw(img)
+
+        # Draw vertical gradient background
+        for y in range(SH):
+            shade = int(y / SH * 12)
+            d.line([(0, y), (SW, y)], fill=(BG[0]+shade, BG[1]+shade+3, BG[2]+shade+5))
+        d.rectangle([0, 0, SW, 12], fill=ACCENT)
+
+        # Centered Watermark Logo near the top
+        wm = _load_watermark()
+        if wm:
+            w_w = int(wm.width * 1.5)
+            w_h = int(wm.height * 1.5)
+            wm_resized = wm.resize((w_w, w_h), Image.Resampling.LANCZOS)
+            img.paste(wm_resized, ((SW - w_w) // 2, 100), wm_resized)
+
+        # Draw Large Centered Text Card on the bottom half
+        card_y = 1180
+        card_w = 920
+        card_h = 500
+        card_x = (SW - card_w) // 2
+
+        d.rounded_rectangle([card_x, card_y, card_x + card_w, card_y + card_h], radius=20, fill=(20, 28, 50), outline=ACCENT, width=3)
+
+        short_font = ImageFont.truetype("fonts/Poppins-Bold.ttf", 46) if os.path.exists("fonts/Poppins-Bold.ttf") else f["heading"]
+
+        lh = short_font.size + 15
+        words = phrase.split()
+        lines = []
+        current_line = []
+        for word in words:
+            current_line.append(word)
+            bb = d.textbbox((0, 0), " ".join(current_line), font=short_font)
+            if bb[2] > card_w - 80 and len(current_line) > 1:
+                current_line.pop()
+                lines.append(" ".join(current_line))
+                current_line = [word]
+        if current_line:
+            lines.append(" ".join(current_line))
+
+        total_text_h = len(lines) * lh
+        start_y = card_y + (card_h - total_text_h) // 2
+        for line in lines:
+            bb = d.textbbox((0, 0), line, font=short_font)
+            line_w = bb[2]
+            d.text((card_x + (card_w - line_w) // 2, start_y), line, font=short_font, fill=(255, 255, 255))
+            start_y += lh
+
+        # Draw a bottom progress bar
+        prog_w = SW - 160
+        prog_h = 10
+        prog_y = SH - 100
+        d.rounded_rectangle([80, prog_y, 80 + prog_w, prog_y + prog_h], radius=5, fill=(30, 41, 59))
+        d.rounded_rectangle([80, prog_y, 80 + int(prog_w * timer_pct), prog_y + prog_h], radius=5, fill=ACCENT)
+
+        return np.array(img)
 
 
 def create_short_animation(script_data: dict, topic: dict,
@@ -587,30 +723,39 @@ def create_short_animation(script_data: dict, topic: dict,
     if not raw_phrases:
         raw_phrases = [narration]
 
-    # Download AI image for the short
-    ref_img = _get_ai_image(prompt, os.path.dirname(output_path), "short")
+    # Download AI image for the short (vertical format 1080x1920)
+    ref_img = _get_ai_image(prompt, os.path.dirname(output_path), "short", width=1080, height=1920)
 
     n = len(raw_phrases)
     phrase_dur = audio_duration / n
+    fps = 24
 
-    clips = []
-    elapsed = 0.0
-
-    for idx, phrase in enumerate(raw_phrases):
-        for f_idx in range(3):
-            sub_pct = (f_idx + 1) / 3
-            current_elapsed = elapsed + (sub_pct * phrase_dur)
-            timer_pct = min(current_elapsed / audio_duration, 1.0)
+    total_short_frames = int(audio_duration * fps)
+    if total_short_frames > 0:
+        short_frames = []
+        for f in range(total_short_frames):
+            t = f / fps
+            short_progress = f / max(total_short_frames - 1, 1)
             
-            frame = _short_frame(phrase, ref_img, timer_pct, timer_pct)
-            clips.append(ImageClip(frame, duration=phrase_dur / 3))
-        
-        elapsed += phrase_dur
+            phrase_idx = int(t / phrase_dur)
+            phrase_idx = min(phrase_idx, n - 1)
+            phrase = raw_phrases[phrase_idx]
+            
+            timer_pct = min(t / audio_duration, 1.0)
+            
+            frame = _short_frame(phrase, ref_img, timer_pct, timer_pct, short_progress)
+            short_frames.append(frame)
+            
+        clips = [ImageSequenceClip(short_frames, fps=fps)]
+    else:
+        # Fallback
+        frame = _short_frame(narration, ref_img, 1.0, 1.0, 0.0)
+        clips = [ImageClip(frame, duration=audio_duration)]
 
     video = concatenate_videoclips(clips, method="compose")
     video.write_videofile(
         output_path,
-        fps=24,
+        fps=fps,
         codec="libx264",
         audio=False,
         threads=4,
