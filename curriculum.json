@@ -97,7 +97,9 @@
         "hardware"
       ],
       "channel": "LearnCS Daily",
-      "uploaded": false
+      "uploaded": true,
+      "video_id": "66CYYq6UIZE",
+      "upload_date": "2026-06-24T07:07:59.079700+00:00"
     },
     {
       "id": "cs007",
