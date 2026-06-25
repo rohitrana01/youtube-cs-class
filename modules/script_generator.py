@@ -189,7 +189,7 @@ Rules:
                     raise e
 
     models_to_try = [GEMINI_MODEL]
-    for fallback in ["gemini-2.0-flash", "gemini-1.5-flash"]:
+    for fallback in ["gemini-2.5-flash-lite", "gemini-flash-latest", "gemini-pro-latest", "gemini-2.0-flash"]:
         if fallback not in models_to_try:
             models_to_try.append(fallback)
 
