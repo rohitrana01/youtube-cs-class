@@ -149,6 +149,14 @@ Rules:
     try:
         import google.generativeai as genai
         genai.configure(api_key=GEMINI_API_KEY)
+        # Diagnostic model check
+        try:
+            print("[script_generator] Available models for this API key:")
+            for m in genai.list_models():
+                if "generateContent" in m.supported_generation_methods:
+                    print(f"  - {m.name}")
+        except Exception as ex:
+            print(f"[script_generator] Note: Could not list models: {ex}")
     except Exception as e:
         raise RuntimeError(f"Failed to import or configure google.generativeai: {e}") from e
 
