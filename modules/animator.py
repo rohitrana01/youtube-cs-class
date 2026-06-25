@@ -627,7 +627,7 @@ def create_animation(script_data: dict, topic: dict,
     clips.append(ImageClip(frame, duration=outro_dur))
 
     # Concatenate and write
-    video = concatenate_videoclips(clips, method="compose")
+    video = concatenate_videoclips(clips, method="chain")
     video.write_videofile(
         output_path,
         fps=fps,
@@ -826,7 +826,7 @@ def create_short_animation(script_data: dict, topic: dict,
         frame = _short_frame(narration, bg_img, 1.0, 1.0)
         clips = [ImageClip(frame, duration=audio_duration)]
 
-    video = concatenate_videoclips(clips, method="compose")
+    video = concatenate_videoclips(clips, method="chain")
     video.write_videofile(
         output_path,
         fps=fps,

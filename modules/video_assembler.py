@@ -23,6 +23,11 @@ def assemble_video(animation_path: str, audio_path: str, output_dir: str, filena
     output_path = os.path.join(output_dir, out_name)
 
     print("  [assembler] Loading video and audio…")
+    if not os.path.exists(animation_path) or os.path.getsize(animation_path) == 0:
+        raise ValueError(f"Animation video file '{animation_path}' is missing or empty (0 bytes). Rendering probably failed.")
+    if not os.path.exists(audio_path) or os.path.getsize(audio_path) == 0:
+        raise ValueError(f"Audio file '{audio_path}' is missing or empty (0 bytes). Narration generation probably failed.")
+        
     video = VideoFileClip(animation_path)
     audio = AudioFileClip(audio_path)
 
