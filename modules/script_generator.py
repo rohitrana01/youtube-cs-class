@@ -210,18 +210,21 @@ Rules:
             f"Gemini API failed for all models in {models_to_try}. Last error: {last_err}"
         ) from last_err
 
-    # Strip accidental markdown fences
-    raw = re.sub(r'^```json\s*', '', raw)
-    raw = re.sub(r'^```\s*', '', raw)
-    raw = re.sub(r'\s*```$', '', raw)
-    raw = raw.strip()
+    # Extract the first valid JSON object using balanced braces
+    try:
+        raw_json = _extract_json_object(raw)
+    except Exception as e:
+        print(f"[script_generator] Failed to find JSON object in response: {e}")
+        print(f"[script_generator] Raw response (first 500 chars): {raw[:500]}")
+        raise ValueError(f"No valid JSON object found in Gemini response: {e}") from e
 
     try:
-        data = json.loads(raw)
+        data = json.loads(raw_json)
     except json.JSONDecodeError as e:
         print(f"[script_generator] JSON parse error: {e}")
+        print(f"[script_generator] Extracted JSON (first 500 chars): {raw_json[:500]}")
         print(f"[script_generator] Raw response (first 500 chars): {raw[:500]}")
-        raise ValueError(f"Failed to parse Gemini response as JSON: {e}") from e
+        raise ValueError(f"Failed to parse extracted JSON: {e}") from e
 
     return data
 
@@ -376,4 +379,36 @@ def _fallback_script(topic: dict) -> dict:
         },
         "short": short
     }
+
+
+def _extract_json_object(s: str) -> str:
+    """Extract the first balanced JSON object from a string."""
+    start_idx = s.find('{')
+    if start_idx == -1:
+        raise ValueError("No '{' found in response")
+        
+    brace_count = 0
+    in_string = False
+    escape = False
+    
+    for i in range(start_idx, len(s)):
+        char = s[i]
+        if escape:
+            escape = False
+            continue
+        if char == '\\':
+            escape = True
+            continue
+        if char == '"':
+            in_string = not in_string
+            continue
+        if not in_string:
+            if char == '{':
+                brace_count += 1
+            elif char == '}':
+                brace_count -= 1
+                if brace_count == 0:
+                    return s[start_idx:i+1]
+                    
+    raise ValueError("Braces are not balanced in response")
 
