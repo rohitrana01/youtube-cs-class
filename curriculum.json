@@ -146,7 +146,11 @@
         "graphics card",
         "nvidia",
         "display"
-      ]
+      ],
+      "channel": "LearnCS Daily",
+      "uploaded": true,
+      "video_id": "lZTxsG1DUro",
+      "upload_date": "2026-06-27T07:16:01.742806+00:00"
     },
     {
       "id": "cs010",
